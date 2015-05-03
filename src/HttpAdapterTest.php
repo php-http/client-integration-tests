@@ -13,7 +13,6 @@ namespace Http\Adapter\Tests;
 
 use Http\Adapter\CoreHttpAdapter;
 use Http\Adapter\HttpAdapterException;
-use Http\Adapter\Message\InternalRequestInterface;
 use Http\Adapter\Message\RequestInterface;
 use Http\Adapter\Message\ResponseInterface;
 use Http\Adapter\MultiHttpAdapterException;
@@ -400,58 +399,58 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function internalRequestProvider()
     {
         return [
-            [$this->getUri(), InternalRequestInterface::METHOD_GET],
-            [$this->getUri(), InternalRequestInterface::METHOD_GET, $this->getHeaders()],
-            [$this->getUri(), InternalRequestInterface::METHOD_HEAD],
-            [$this->getUri(), InternalRequestInterface::METHOD_HEAD, $this->getHeaders()],
-            [$this->getUri(), InternalRequestInterface::METHOD_TRACE],
-            [$this->getUri(), InternalRequestInterface::METHOD_TRACE, $this->getHeaders()],
-            [$this->getUri(), InternalRequestInterface::METHOD_POST],
-            [$this->getUri(), InternalRequestInterface::METHOD_POST, $this->getHeaders()],
-            [$this->getUri(), InternalRequestInterface::METHOD_POST, $this->getHeaders(), $this->getData()],
+            [$this->getUri(), RequestInterface::METHOD_GET],
+            [$this->getUri(), RequestInterface::METHOD_GET, $this->getHeaders()],
+            [$this->getUri(), RequestInterface::METHOD_HEAD],
+            [$this->getUri(), RequestInterface::METHOD_HEAD, $this->getHeaders()],
+            [$this->getUri(), RequestInterface::METHOD_TRACE],
+            [$this->getUri(), RequestInterface::METHOD_TRACE, $this->getHeaders()],
+            [$this->getUri(), RequestInterface::METHOD_POST],
+            [$this->getUri(), RequestInterface::METHOD_POST, $this->getHeaders()],
+            [$this->getUri(), RequestInterface::METHOD_POST, $this->getHeaders(), $this->getData()],
             [
                 $this->getUri(),
-                InternalRequestInterface::METHOD_POST,
+                RequestInterface::METHOD_POST,
                 $this->getHeaders(),
                 $this->getData(),
                 $this->getFiles(),
             ],
-            [$this->getUri(), InternalRequestInterface::METHOD_PUT],
-            [$this->getUri(), InternalRequestInterface::METHOD_PUT, $this->getHeaders()],
-            [$this->getUri(), InternalRequestInterface::METHOD_PUT, $this->getHeaders(), $this->getData()],
+            [$this->getUri(), RequestInterface::METHOD_PUT],
+            [$this->getUri(), RequestInterface::METHOD_PUT, $this->getHeaders()],
+            [$this->getUri(), RequestInterface::METHOD_PUT, $this->getHeaders(), $this->getData()],
             [
                 $this->getUri(),
-                InternalRequestInterface::METHOD_PUT,
+                RequestInterface::METHOD_PUT,
                 $this->getHeaders(),
                 $this->getData(),
                 $this->getFiles(),
             ],
-            [$this->getUri(), InternalRequestInterface::METHOD_PATCH],
-            [$this->getUri(), InternalRequestInterface::METHOD_PATCH, $this->getHeaders()],
-            [$this->getUri(), InternalRequestInterface::METHOD_PATCH, $this->getHeaders(), $this->getData()],
+            [$this->getUri(), RequestInterface::METHOD_PATCH],
+            [$this->getUri(), RequestInterface::METHOD_PATCH, $this->getHeaders()],
+            [$this->getUri(), RequestInterface::METHOD_PATCH, $this->getHeaders(), $this->getData()],
             [
                 $this->getUri(),
-                InternalRequestInterface::METHOD_PATCH,
+                RequestInterface::METHOD_PATCH,
                 $this->getHeaders(),
                 $this->getData(),
                 $this->getFiles(),
             ],
-            [$this->getUri(), InternalRequestInterface::METHOD_DELETE],
-            [$this->getUri(), InternalRequestInterface::METHOD_DELETE, $this->getHeaders()],
-            [$this->getUri(), InternalRequestInterface::METHOD_DELETE, $this->getHeaders(), $this->getData()],
+            [$this->getUri(), RequestInterface::METHOD_DELETE],
+            [$this->getUri(), RequestInterface::METHOD_DELETE, $this->getHeaders()],
+            [$this->getUri(), RequestInterface::METHOD_DELETE, $this->getHeaders(), $this->getData()],
             [
                 $this->getUri(),
-                InternalRequestInterface::METHOD_DELETE,
+                RequestInterface::METHOD_DELETE,
                 $this->getHeaders(),
                 $this->getData(),
                 $this->getFiles(),
             ],
-            [$this->getUri(), InternalRequestInterface::METHOD_OPTIONS],
-            [$this->getUri(), InternalRequestInterface::METHOD_OPTIONS, $this->getHeaders()],
-            [$this->getUri(), InternalRequestInterface::METHOD_OPTIONS, $this->getHeaders(), $this->getData()],
+            [$this->getUri(), RequestInterface::METHOD_OPTIONS],
+            [$this->getUri(), RequestInterface::METHOD_OPTIONS, $this->getHeaders()],
+            [$this->getUri(), RequestInterface::METHOD_OPTIONS, $this->getHeaders(), $this->getData()],
             [
                 $this->getUri(),
-                InternalRequestInterface::METHOD_OPTIONS,
+                RequestInterface::METHOD_OPTIONS,
                 $this->getHeaders(),
                 $this->getData(),
                 $this->getFiles(),
@@ -470,7 +469,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
             $requests[] = [
                 $request[0],
                 $request[1],
-                InternalRequestInterface::PROTOCOL_VERSION_1_1,
+                RequestInterface::PROTOCOL_VERSION_1_1,
                 isset($request[2]) ? $request[2] : [],
                 isset($request[3]) ? $request[3] : [],
                 isset($request[4]) ? $request[4] : [],
@@ -481,7 +480,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
             $requests[] = $this->httpAdapter->getConfiguration()->getMessageFactory()->createRequest(
                 $request[0],
                 $request[1],
-                InternalRequestInterface::PROTOCOL_VERSION_1_1,
+                RequestInterface::PROTOCOL_VERSION_1_1,
                 isset($request[2]) ? $request[2] : [],
                 http_build_query(isset($request[3]) ? $request[3] : [], null, '&')
             );
@@ -491,7 +490,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
             $requests[] = $this->httpAdapter->getConfiguration()->getMessageFactory()->createInternalRequest(
                 $request[0],
                 $request[1],
-                InternalRequestInterface::PROTOCOL_VERSION_1_1,
+                RequestInterface::PROTOCOL_VERSION_1_1,
                 isset($request[2]) ? $request[2] : [],
                 isset($request[3]) ? $request[3] : [],
                 isset($request[4]) ? $request[4] : []

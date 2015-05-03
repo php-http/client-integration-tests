@@ -1,0 +1,32 @@
+{
+    "name": "php-http/adapter-integration-tests",
+    "description": "Adapter integration tests",
+    "license": "MIT",
+    "keywords": ["http", "integration", "tests"],
+    "homepage": "http://php-http.org",
+    "authors": [
+        {
+            "name": "Eric GELOEN",
+            "email": "geloen.eric@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "phpunit/phpunit": "~4.4",
+    },
+    "require-dev": {
+        "php-http/adapter-core": "dev-initial_import"
+    },
+    "autoload": {
+        "psr-4": {
+            "Http\\Adapter\\Tests\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}

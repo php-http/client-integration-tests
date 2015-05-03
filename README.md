@@ -2,10 +2,6 @@
 
 [![Latest Version](https://img.shields.io/github/release/php-http/adapter-integration-tests.svg?style=flat-square)](https://github.com/php-http/adapter-integration-tests/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/travis/php-http/adapter-integration-tests.svg?style=flat-square)](https://travis-ci.org/php-http/adapter-integration-tests)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/php-http/adapter-integration-tests.svg?style=flat-square)](https://scrutinizer-ci.com/g/php-http/adapter-integration-tests)
-[![Quality Score](https://img.shields.io/scrutinizer/g/php-http/adapter-integration-tests.svg?style=flat-square)](https://scrutinizer-ci.com/g/php-http/adapter-integration-tests)
-[![HHVM Status](https://img.shields.io/hhvm/php-http/adapter-integration-tests.svg?style=flat-square)](http://hhvm.h4cc.de/package/php-http/adapter-integration-tests)
 [![Total Downloads](https://img.shields.io/packagist/dt/php-http/adapter-integration-tests.svg?style=flat-square)](https://packagist.org/packages/php-http/adapter-integration-tests)
 
 **HTTP adapter integration tests.**
@@ -21,6 +17,8 @@ $ composer require php-http/adapter-integration-tests
 
 
 ## Usage
+
+This package should not be used on its own. It provides integration tests for HTTP Adapters.
 
 
 ## Testing

@@ -25,11 +25,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    private static $fixturePath;
-
-    /**
-     * @var string
-     */
     private static $logPath;
 
     /**
@@ -47,7 +42,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$fixturePath = realpath(__DIR__.'/../fixture');
         self::$logPath = PHPUnitUtility::getFile(true, 'php-http-adapter.log');
     }
 
@@ -694,11 +688,13 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     private function getFiles()
     {
+        $fixturePath = realpath(__DIR__.'/../fixture/files');
+
         return [
-            'file1' => [self::$fixturePath.'/files/file1.txt'],
+            'file1' => [$fixturePath.'/file1.txt'],
             'file2' => [
-                self::$fixturePath.'/files/file2.txt',
-                [self::$fixturePath.'/files/file3.txt'],
+                $fixturePath.'/file2.txt',
+                [$fixturePath.'/file3.txt'],
             ],
         ];
     }

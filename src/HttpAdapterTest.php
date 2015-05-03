@@ -168,8 +168,8 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendRequest($uri, $method, array $headers = [], array $data = [])
     {
         $request = $this->httpAdapter->getConfiguration()->getMessageFactory()->createRequest(
-            $uri,
             $method,
+            $uri,
             RequestInterface::PROTOCOL_VERSION_1_1,
             $headers,
             http_build_query($data, null, '&')
@@ -190,8 +190,8 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendInternalRequest($uri, $method, array $headers = [], array $data = [], array $files = [])
     {
         $request = $this->httpAdapter->getConfiguration()->getMessageFactory()->createInternalRequest(
-            $uri,
             $method,
+            $uri,
             RequestInterface::PROTOCOL_VERSION_1_1,
             $headers,
             $data,
@@ -219,7 +219,8 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendErroredRequests()
     {
-        list($requests, $erroredRequests) = $this->erroredRequestsProvider();
+        $requests = $this->requestsProvider();
+        $erroredRequests = $this->erroredRequestsProvider();
 
         try {
             $this->httpAdapter->sendRequests(array_merge($requests, $erroredRequests));
@@ -259,7 +260,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertResponse(
-            $this->httpAdapter->send($this->getUri(), $method = RequestInterface::METHOD_GET),
+            $this->httpAdapter->send($method = RequestInterface::METHOD_GET, $this->getUri()),
             ['protocol_version' => $protocolVersion]
         );
 
@@ -273,7 +274,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $this->httpAdapter->getConfiguration()->setUserAgent($userAgent = 'foo');
 
-        $this->assertResponse($this->httpAdapter->send($this->getUri(), $method = RequestInterface::METHOD_GET));
+        $this->assertResponse($this->httpAdapter->send($method = RequestInterface::METHOD_GET, $this->getUri()));
         $this->assertRequest($method, ['User-Agent' => $userAgent]);
     }
 
@@ -283,7 +284,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendWithClientError()
     {
         $this->assertResponse(
-            $this->httpAdapter->send($uri = $this->getClientErrorUri(), $method = RequestInterface::METHOD_GET),
+            $this->httpAdapter->send($method = RequestInterface::METHOD_GET, $uri = $this->getClientErrorUri()),
             [
                 'status_code'   => 400,
                 'reason_phrase' => 'Bad Request',
@@ -299,7 +300,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendWithServerError()
     {
         $this->assertResponse(
-            $this->httpAdapter->send($uri = $this->getServerErrorUri(), $method = RequestInterface::METHOD_GET),
+            $this->httpAdapter->send($method = RequestInterface::METHOD_GET, $uri = $this->getServerErrorUri()),
             [
                 'status_code'   => 500,
                 'reason_phrase' => 'Internal Server Error',
@@ -315,7 +316,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendWithRedirect()
     {
         $this->assertResponse(
-            $this->httpAdapter->send($uri = $this->getRedirectUri(), $method = RequestInterface::METHOD_GET),
+            $this->httpAdapter->send($method = RequestInterface::METHOD_GET, $uri = $this->getRedirectUri()),
             [
                 'status_code'   => 302,
                 'reason_phrase' => 'Found',
@@ -332,7 +333,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendWithInvalidUri()
     {
-        $this->httpAdapter->send($this->getInvalidUri(), RequestInterface::METHOD_GET);
+        $this->httpAdapter->send(RequestInterface::METHOD_GET, $this->getInvalidUri());
     }
 
     /**
@@ -343,7 +344,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendWithTimeoutExceeded($timeout)
     {
         $this->httpAdapter->getConfiguration()->setTimeout($timeout);
-        $this->httpAdapter->send($this->getDelayUri($timeout), RequestInterface::METHOD_GET);
+        $this->httpAdapter->send(RequestInterface::METHOD_GET, $this->getDelayUri($timeout));
     }
 
     /**
@@ -457,12 +458,12 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function requestsProvider()
     {
-        $requests = [$this->getUri()];
+        $requests = [[RequestInterface::METHOD_GET, $this->getUri()]];
 
         foreach ($this->requestProvider() as $request) {
             $requests[] = [
-                $request[0],
                 $request[1],
+                $request[0],
                 RequestInterface::PROTOCOL_VERSION_1_1,
                 isset($request[2]) ? $request[2] : [],
                 isset($request[3]) ? $request[3] : [],
@@ -472,8 +473,8 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
 
         foreach ($this->requestProvider() as $request) {
             $requests[] = $this->httpAdapter->getConfiguration()->getMessageFactory()->createRequest(
-                $request[0],
                 $request[1],
+                $request[0],
                 RequestInterface::PROTOCOL_VERSION_1_1,
                 isset($request[2]) ? $request[2] : [],
                 http_build_query(isset($request[3]) ? $request[3] : [], null, '&')
@@ -482,8 +483,8 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
 
         foreach ($this->requestProvider() as $request) {
             $requests[] = $this->httpAdapter->getConfiguration()->getMessageFactory()->createInternalRequest(
-                $request[0],
                 $request[1],
+                $request[0],
                 RequestInterface::PROTOCOL_VERSION_1_1,
                 isset($request[2]) ? $request[2] : [],
                 isset($request[3]) ? $request[3] : [],
@@ -499,10 +500,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function erroredRequestsProvider()
     {
-        return [
-            $this->requestsProvider(),
-            [$this->getInvalidUri()],
-        ];
+        return [[RequestInterface::METHOD_GET, $this->getInvalidUri()]];
     }
 
     /**
@@ -581,7 +579,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
 
         $defaultHeaders = [
             'Connection' => 'close',
-            'User-Agent' => 'Php Http Adapter',
+            'User-Agent' => 'PHP Http Adapter',
         ];
 
         $headers = array_merge($defaultHeaders, $headers);

@@ -13,6 +13,7 @@ namespace Http\Adapter\Tests;
 
 use Http\Adapter\CoreHttpAdapter;
 use Http\Adapter\HttpAdapterException;
+use Http\Adapter\Message\InternalRequestInterface;
 use Http\Adapter\Message\RequestInterface;
 use Http\Adapter\Message\ResponseInterface;
 use Http\Adapter\MultiHttpAdapterException;

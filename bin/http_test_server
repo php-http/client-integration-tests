@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# Installed as a dependency
+if [ -f "$DIR/../autoload.php" ]; then
+    php -S 127.0.0.1:10000 -t "$DIR/../php-http/adapter-integration-tests/fixture"
+# Development
+elif [ -f "$DIR/../vendor/autoload.php" ]; then
+    php -S 127.0.0.1:10000 -t "$DIR/../fixture"
+fi

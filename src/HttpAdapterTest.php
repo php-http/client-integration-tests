@@ -842,7 +842,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         foreach ($responses as $response) {
             $this->assertTrue($response->hasParameter('request'));
             $this->assertInstanceOf(
-                'Http\Adapter\Message\InternalRequest',
+                'Http\Adapter\Internal\Message\InternalRequest',
                 $response->getParameter('request')
             );
         }
@@ -859,7 +859,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         foreach ($exceptions as $exception) {
             $this->assertTrue($exception->hasRequest());
             $this->assertInstanceOf(
-                'Http\Adapter\Message\InternalRequest',
+                'Http\Adapter\Internal\Message\InternalRequest',
                 $exception->getRequest()
             );
         }

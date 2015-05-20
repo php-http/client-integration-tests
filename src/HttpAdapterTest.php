@@ -255,7 +255,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendWithProtocolVersion10()
     {
-        $this->httpAdapter->setOption('protocolVersion', '1.0');
+        $this->httpAdapter->setOption('protocolVersion', $protocolVersion = '1.0');
 
         $this->assertResponse(
             $this->httpAdapter->send($method = 'GET', $this->getUri()),
@@ -270,7 +270,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendWithUserAgent()
     {
-        $this->httpAdapter->setOption('userAgent', 'foo');
+        $this->httpAdapter->setOption('userAgent', $userAgent = 'foo');
 
         $this->assertResponse($this->httpAdapter->send($method = 'GET', $this->getUri()));
         $this->assertRequest($method, ['User-Agent' => $userAgent]);

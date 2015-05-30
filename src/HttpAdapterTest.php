@@ -43,7 +43,13 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $defaultOptions;
+    protected $defaultOptions = [
+        'protocolVersion' => '1.1',
+        'statusCode'      => 200,
+        'reasonPhrase'    => 'OK',
+        'headers'         => ['Content-Type' => 'text/html'],
+        'body'            => 'Ok',
+    ];
 
     /**
      * @var array
@@ -77,14 +83,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->defaultOptions = [
-            'protocolVersion' => '1.1',
-            'statusCode'      => 200,
-            'reasonPhrase'    => 'OK',
-            'headers'         => ['Content-Type' => 'text/html'],
-            'body'            => 'Ok',
-        ];
-
         $this->httpAdapter = $this->createHttpAdapter();
     }
 
@@ -107,12 +105,12 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      * @dataProvider requestProvider
      * @group        integration
      */
-    public function testSendRequest($method, $uri, $protocolVersion, array $headers, $body)
+    public function testSendRequest($method, $uri, array $headers, $body)
     {
         $request = self::$messageFactory->createRequest(
             $method,
             $uri,
-            $protocolVersion,
+            '1.1',
             $headers,
             $body
         );
@@ -122,11 +120,49 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertResponse(
             $response,
             [
-                'protocolVersion' => $protocolVersion,
-                'body'            => $method === 'HEAD' ? null : 'Ok',
+                'body' => $method === 'HEAD' ? null : 'Ok',
             ]
         );
+        $this->assertRequest($method, $headers, $body, '1.1');
+    }
+
+    /**
+     * @dataProvider requestWithOutcomeProvider
+     * @group        integration
+     */
+    public function testSendRequestWithOutcome($uriAndOutcome, $protocolVersion, array $headers, $body)
+    {
+        $request = self::$messageFactory->createRequest(
+            'GET',
+            $uriAndOutcome[0],
+            $protocolVersion,
+            $headers,
+            $body
+        );
+
+        $response = $this->httpAdapter->sendRequest($request);
+
+        $this->assertResponse(
+            $response,
+            $uriAndOutcome[1]
+        );
         $this->assertRequest($method, $headers, $body, $protocolVersion);
+    }
+
+    /**
+     * @expectedException \Http\Adapter\Exception\HttpAdapterException
+     * @group             integration
+     */
+    public function testSendWithInvalidUri()
+    {
+        $request = self::$messageFactory->createRequest(
+            'GET',
+            $this->getInvalidUri(),
+            '1.1',
+            $this->defaultHeaders
+        );
+
+        $this->httpAdapter->sendRequest($request);
     }
 
     /**
@@ -156,119 +192,31 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group integration
-     */
-    public function testSendWithClientError()
-    {
-        $request = self::$messageFactory->createRequest(
-            $method = 'GET',
-            $this->getClientErrorUri(),
-            '1.1',
-            $this->defaultHeaders
-        );
-
-        $response = $this->httpAdapter->sendRequest($request);
-
-        $this->assertResponse(
-            $response,
-            [
-                'statusCode'   => 400,
-                'reasonPhrase' => 'Bad Request',
-            ]
-        );
-
-        $this->assertRequest($method);
-    }
-
-    /**
-     * @group integration
-     */
-    public function testSendWithServerError()
-    {
-        $request = self::$messageFactory->createRequest(
-            $method = 'GET',
-            $this->getServerErrorUri(),
-            '1.1',
-            $this->defaultHeaders
-        );
-
-        $response = $this->httpAdapter->sendRequest($request);
-
-        $this->assertResponse(
-            $response,
-            [
-                'statusCode'   => 500,
-                'reasonPhrase' => 'Internal Server Error',
-            ]
-        );
-
-        $this->assertRequest($method);
-    }
-
-    /**
-     * @group integration
-     */
-    public function testSendWithRedirect()
-    {
-        $request = self::$messageFactory->createRequest(
-            $method = 'GET',
-            $this->getRedirectUri(),
-            '1.1',
-            $this->defaultHeaders
-        );
-
-        $response = $this->httpAdapter->sendRequest($request);
-
-        $this->assertResponse(
-            $response,
-            [
-                'statusCode'   => 302,
-                'reasonPhrase' => 'Found',
-                'body'         => 'Redirect',
-            ]
-        );
-
-        $this->assertRequest($method);
-    }
-
-    /**
-     * @expectedException \Http\Adapter\Exception\HttpAdapterException
-     * @group             integration
-     */
-    public function testSendWithInvalidUri()
-    {
-        $request = self::$messageFactory->createRequest(
-            'GET',
-            $this->getInvalidUri(),
-            '1.1',
-            $this->defaultHeaders
-        );
-
-        $this->httpAdapter->sendRequest($request);
-    }
-
-    /**
-     * @dataProvider      timeoutProvider
-     * @expectedException \Http\Adapter\Exception\HttpAdapterException
-     * @group             integration
-     */
-    // public function testSendWithTimeoutExceeded($timeout)
-    // {
-    //     $this->httpAdapter->setOption('timeout', $timeout);
-    //     $this->httpAdapter->send('GET', $this->getDelayUri($timeout));
-    // }
-
-    /**
      * @return array
      */
     public function requestProvider()
     {
         $sets = [
-            'methods'          => $this->getMethods(),
-            'uri'              => [$this->getUri()],
-            'protocolVersions' => $this->getProtocolVersions(),
-            'headers'          => [[$this->defaultHeaders], [array_merge($this->defaultHeaders, $this->getHeaders())]],
-            'body'             => [null, http_build_query($this->getData(), null, '&')],
+            'methods' => $this->getMethods(),
+            'uris'    => [$this->getUri()],
+            'headers' => $this->getHeaders(),
+            'body'    => $this->getBodies(),
+        ];
+
+        $cartesianProduct = new CartesianProduct($sets);
+
+        return $cartesianProduct->compute();
+    }
+
+    /**
+     * @return array
+     */
+    public function requestWithOutcomeProvider()
+    {
+        $sets = [
+            'uriAndOutcome' => $this->getUrisAndOutcomes(),
+            'headers'       => $this->getHeaders(),
+            'body'          => $this->getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -281,27 +229,20 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function requestsProvider()
     {
-        $requests = [];
-        $requestList = [];
+        $requests = $this->requestProvider();
         $messageFactory = MessageFactoryGuesser::guess();
 
-        foreach ($this->requestProvider() as $request) {
-            $requests[] = $messageFactory->createRequest(
+        foreach ($requests as &$request) {
+            $request = $messageFactory->createRequest(
                 $request[0],
                 $request[1],
+                '1.1',
                 $request[2],
-                $request[3],
-                $request[4]
+                $request[3]
             );
         }
 
-        $requests = array_chunk($requests, 3);
-
-        foreach ($requests as $threeRequests) {
-            $requestList[] = [$threeRequests];
-        }
-
-        return $requestList;
+        return [[$requests]];
     }
 
     /**
@@ -311,56 +252,35 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $requests = [];
         $erroredRequests = [];
-        $requestList = [];
         $messageFactory = MessageFactoryGuesser::guess();
 
-        foreach ($this->requestProvider() as $request) {
-            if ($request[0] !== 'GET') {
-                continue;
-            }
+        $sets = [
+            'methods' => ['GET'],
+            'uris'    => [$this->getUri(), $this->getInvalidUri()],
+            'headers' => $this->getHeaders(),
+            'body'    => $this->getBodies(),
+        ];
 
+        $cartesianProduct = new CartesianProduct($sets);
+
+        foreach ($cartesianProduct as $request) {
             $requests[] = $messageFactory->createRequest(
                 $request[0],
                 $request[1],
+                '1.1',
                 $request[2],
-                $request[3],
-                $request[4]
-            );
-
-            $erroredRequests[] = $messageFactory->createRequest(
-                $request[0],
-                $this->getInvalidUri(),
-                $request[2],
-                $request[3],
-                $request[4]
+                $request[3]
             );
         }
 
-        $requests = array_chunk($requests, 3);
-        $erroredRequests = array_chunk($erroredRequests, 3);
-
-        foreach ($requests as $key => $threeRequests) {
-            $requestList[] = [
-                $threeRequests,
-                $erroredRequests[$key],
-            ];
-        }
-
-        return $requestList;
+        // First x are simple requests, all-x are errored requests
+        return [[array_chunk($requests, count($requests)/2)]];
     }
 
     /**
      * @return array
      */
-    public function timeoutProvider()
-    {
-        return [[0.5], [1]];
-    }
-
-    /**
-     * @return array
-     */
-    public function getMethods()
+    private function getMethods()
     {
         return [
             'GET',
@@ -386,14 +306,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
-     */
-    public function getProtocolVersions()
-    {
-        return ['1.1'];
-    }
-
-    /**
      * @return string
      */
     private function getInvalidUri()
@@ -402,37 +314,42 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return string
+     * @return array
      */
-    private function getClientErrorUri()
+    private function getUrisAndOutcomes()
     {
-        return $this->getUri(['client_error' => true]);
+        return [
+            [
+                $this->getUri(['client_error' => true]),
+                [
+                    'statusCode'   => 400,
+                    'reasonPhrase' => 'Bad Request',
+                ],
+            ],
+            [
+                $this->getUri(['server_error' => true]),
+                [
+                    'statusCode'   => 500,
+                    'reasonPhrase' => 'Internal Server Error',
+                ],
+            ],
+            [
+                $this->getUri(['redirect' => true]),
+                [
+                    'statusCode'   => 302,
+                    'reasonPhrase' => 'Found',
+                    'body'         => 'Redirect',
+                ],
+            ],
+        ];
     }
 
     /**
-     * @return string
+     * @return array
      */
-    private function getServerErrorUri()
+    private function getProtocolVersions()
     {
-        return $this->getUri(['server_error' => true]);
-    }
-
-    /**
-     * @param float $delay
-     *
-     * @return string
-     */
-    private function getDelayUri($delay = 1.0)
-    {
-        return $this->getUri(['delay' => $delay + 0.01]);
-    }
-
-    /**
-     * @return string
-     */
-    private function getRedirectUri()
-    {
-        return $this->getUri(['redirect' => true]);
+        return ['1.1', '1.0'];
     }
 
     /**
@@ -441,8 +358,22 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     private function getHeaders()
     {
         return [
-            'Accept-Charset' => 'utf-8',
-            'Accept-Language:fr',
+            $this->defaultHeaders,
+            array_merge($this->defaultHeaders, [
+                'Accept-Charset' => 'utf-8',
+                'Accept-Language:fr',
+            ]),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getBodies()
+    {
+        return [
+            null,
+            http_build_query($this->getData(), null, '&'),
         ];
     }
 

@@ -15,7 +15,7 @@
         "phpunit/phpunit": "~4.4",
         "php-http/common": "dev-master",
         "guzzlehttp/psr7": "~1.0",
-        "th3n3rd/cartesian-product": "^0.2"
+        "th3n3rd/cartesian-product": "^0.3"
     },
     "autoload": {
         "psr-4": {

@@ -132,8 +132,12 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendRequestWithOutcome($uriAndOutcome, $protocolVersion, array $headers, $body)
     {
+        if ($protocolVersion === '1.0') {
+            $body = null;
+        }
+
         $request = self::$messageFactory->createRequest(
-            'GET',
+            $method = 'GET',
             $uriAndOutcome[0],
             $protocolVersion,
             $headers,
@@ -142,9 +146,12 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
 
         $response = $this->httpAdapter->sendRequest($request);
 
+        $outcome = $uriAndOutcome[1];
+        $outcome['protocolVersion'] = $protocolVersion;
+
         $this->assertResponse(
             $response,
-            $uriAndOutcome[1]
+            $outcome
         );
         $this->assertRequest($method, $headers, $body, $protocolVersion);
     }
@@ -214,9 +221,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function requestWithOutcomeProvider()
     {
         $sets = [
-            'uriAndOutcome' => $this->getUrisAndOutcomes(),
-            'headers'       => $this->getHeaders(),
-            'body'          => $this->getBodies(),
+            'urisAndOutcomes'  => $this->getUrisAndOutcomes(),
+            'protocolVersions' => $this->getProtocolVersions(),
+            'headers'          => $this->getHeaders(),
+            'body'             => $this->getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -274,7 +282,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         }
 
         // First x are simple requests, all-x are errored requests
-        return [[array_chunk($requests, count($requests)/2)]];
+        return [array_chunk($requests, count($requests)/2)];
     }
 
     /**
@@ -357,12 +365,13 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     private function getHeaders()
     {
+        $headers = $this->defaultHeaders;
+        $headers['Accept-Charset'] = 'utf-8';
+        $headers['Accept-Language'] = 'en';
+
         return [
             $this->defaultHeaders,
-            array_merge($this->defaultHeaders, [
-                'Accept-Charset' => 'utf-8',
-                'Accept-Language:fr',
-            ]),
+            $headers,
         ];
     }
 

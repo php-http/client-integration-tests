@@ -15,7 +15,9 @@
         "phpunit/phpunit": "~4.4"
     },
     "require-dev": {
-        "php-http/adapter-core": "dev-internal_separation"
+        "php-http/common": "dev-master",
+        "guzzlehttp/psr7": "~1.0",
+        "th3n3rd/cartesian-product": "^0.2"
     },
     "autoload": {
         "psr-4": {

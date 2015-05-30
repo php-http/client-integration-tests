@@ -272,7 +272,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
                 $request[0],
                 $request[1],
                 $request[3],
-                $request[4],
+                $request[4]
             );
         }
 
@@ -297,14 +297,14 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
                 $request[0],
                 $request[1],
                 $request[3],
-                $request[4],
+                $request[4]
             );
 
             $erroredRequests[] = self::$messageFactory->createRequest(
                 $request[0],
                 $this->getInvalidUri(),
                 $request[3],
-                $request[4],
+                $request[4]
             );
         }
 

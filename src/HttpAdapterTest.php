@@ -266,9 +266,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function requestsProvider()
     {
         $requests = [];
+        $messageFactory = MessageFactoryGuesser::guess();
 
         foreach ($this->requestProvider() as $request) {
-            $requests[] = self::$messageFactory->createRequest(
+            $requests[] = $messageFactory->createRequest(
                 $request[0],
                 $request[1],
                 $request[3],
@@ -287,20 +288,21 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $requests = [];
         $erroredRequests = [];
         $requestList = [];
+        $messageFactory = MessageFactoryGuesser::guess();
 
         foreach ($this->requestProvider() as $request) {
             if ($request[0] !== 'GET') {
                 continue;
             }
 
-            $requests[] = self::$messageFactory->createRequest(
+            $requests[] = $messageFactory->createRequest(
                 $request[0],
                 $request[1],
                 $request[3],
                 $request[4]
             );
 
-            $erroredRequests[] = self::$messageFactory->createRequest(
+            $erroredRequests[] = $messageFactory->createRequest(
                 $request[0],
                 $this->getInvalidUri(),
                 $request[3],

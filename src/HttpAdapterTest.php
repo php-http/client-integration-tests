@@ -46,6 +46,14 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     protected $defaultOptions;
 
     /**
+     * @var array
+     */
+    protected $defaultHeaders = [
+        'Connection' => 'close',
+        'User-Agent' => 'PHP HTTP Adapter',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public static function setUpBeforeClass()
@@ -115,10 +123,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
             $response,
             [
                 'protocolVersion' => $protocolVersion,
-                'body'            => $method === 'HEAD' ? null : $body,
+                'body'            => $method === 'HEAD' ? null : 'Ok',
             ]
         );
-        $this->assertRequest($method, $headers, $body);
+        $this->assertRequest($method, $headers, $body, $protocolVersion);
     }
 
     /**
@@ -133,7 +141,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider erroredRequestProvider
+     * @dataProvider erroredRequestsProvider
      * @group        integration
      */
     public function testSendErroredRequests(array $requests, array $erroredRequests)
@@ -153,8 +161,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendWithClientError()
     {
         $request = self::$messageFactory->createRequest(
-            'GET',
-            $this->getClientErrorUri()
+            $method = 'GET',
+            $this->getClientErrorUri(),
+            '1.1',
+            $this->defaultHeaders
         );
 
         $response = $this->httpAdapter->sendRequest($request);
@@ -176,8 +186,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendWithServerError()
     {
         $request = self::$messageFactory->createRequest(
-            'GET',
-            $this->getServerErrorUri()
+            $method = 'GET',
+            $this->getServerErrorUri(),
+            '1.1',
+            $this->defaultHeaders
         );
 
         $response = $this->httpAdapter->sendRequest($request);
@@ -199,8 +211,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function testSendWithRedirect()
     {
         $request = self::$messageFactory->createRequest(
-            'GET',
-            $this->getRedirectUri()
+            $method = 'GET',
+            $this->getRedirectUri(),
+            '1.1',
+            $this->defaultHeaders
         );
 
         $response = $this->httpAdapter->sendRequest($request);
@@ -225,7 +239,9 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $request = self::$messageFactory->createRequest(
             'GET',
-            $this->getInvalidUri()
+            $this->getInvalidUri(),
+            '1.1',
+            $this->defaultHeaders
         );
 
         $this->httpAdapter->sendRequest($request);
@@ -251,7 +267,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
             'methods'          => $this->getMethods(),
             'uri'              => [$this->getUri()],
             'protocolVersions' => $this->getProtocolVersions(),
-            'headers'          => [[], $this->getHeaders()],
+            'headers'          => [[$this->defaultHeaders], [array_merge($this->defaultHeaders, $this->getHeaders())]],
             'body'             => [null, http_build_query($this->getData(), null, '&')],
         ];
 
@@ -266,6 +282,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function requestsProvider()
     {
         $requests = [];
+        $requestList = [];
         $messageFactory = MessageFactoryGuesser::guess();
 
         foreach ($this->requestProvider() as $request) {
@@ -278,7 +295,13 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        return array_chunk($requests, 3);
+        $requests = array_chunk($requests, 3);
+
+        foreach ($requests as $threeRequests) {
+            $requestList[] = [$threeRequests];
+        }
+
+        return $requestList;
     }
 
     /**
@@ -367,7 +390,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function getProtocolVersions()
     {
-        return ['1.1', '1.0'];
+        return ['1.1'];
     }
 
     /**
@@ -417,7 +440,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     private function getHeaders()
     {
-        return ['Accept-Charset' => 'utf-8', 'Accept-Language:fr'];
+        return [
+            'Accept-Charset' => 'utf-8',
+            'Accept-Language:fr',
+        ];
     }
 
     /**

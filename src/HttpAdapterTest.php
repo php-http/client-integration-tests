@@ -65,7 +65,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         self::$logPath = PHPUnitUtility::getFile(true, 'php-http-adapter.log');
-        self::$messageFactory = MessageFactoryDiscovery::guess();
+        self::$messageFactory = MessageFactoryDiscovery::find();
     }
 
     /**
@@ -238,7 +238,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function requestsProvider()
     {
         $requests = $this->requestProvider();
-        $messageFactory = MessageFactoryDiscovery::guess();
+        $messageFactory = MessageFactoryDiscovery::find();
 
         foreach ($requests as &$request) {
             $request = $messageFactory->createRequest(
@@ -260,7 +260,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $requests = [];
         $erroredRequests = [];
-        $messageFactory = MessageFactoryDiscovery::guess();
+        $messageFactory = MessageFactoryDiscovery::find();
 
         $sets = [
             'methods' => ['GET'],

@@ -15,7 +15,7 @@ use Http\Adapter\HttpAdapter;
 use Http\Adapter\HttpAdapterException;
 use Http\Adapter\Exception\MultiHttpAdapterException;
 use Http\Message\MessageFactory;
-use Http\Common\Message\MessageFactoryGuesser;
+use Http\Message\MessageFactoryGuesser;
 use Nerd\CartesianProduct\CartesianProduct;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

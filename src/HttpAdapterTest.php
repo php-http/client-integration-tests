@@ -15,7 +15,7 @@ use Http\Adapter\HttpAdapter;
 use Http\Adapter\HttpAdapterException;
 use Http\Adapter\Exception\MultiHttpAdapterException;
 use Http\Message\MessageFactory;
-use Http\Message\MessageFactoryGuesser;
+use Http\Discovery\MessageFactoryDiscovery;
 use Nerd\CartesianProduct\CartesianProduct;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -65,7 +65,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         self::$logPath = PHPUnitUtility::getFile(true, 'php-http-adapter.log');
-        self::$messageFactory = MessageFactoryGuesser::guess();
+        self::$messageFactory = MessageFactoryDiscovery::guess();
     }
 
     /**
@@ -238,7 +238,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     public function requestsProvider()
     {
         $requests = $this->requestProvider();
-        $messageFactory = MessageFactoryGuesser::guess();
+        $messageFactory = MessageFactoryDiscovery::guess();
 
         foreach ($requests as &$request) {
             $request = $messageFactory->createRequest(
@@ -260,7 +260,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $requests = [];
         $erroredRequests = [];
-        $messageFactory = MessageFactoryGuesser::guess();
+        $messageFactory = MessageFactoryDiscovery::guess();
 
         $sets = [
             'methods' => ['GET'],

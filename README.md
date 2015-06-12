@@ -1,4 +1,4 @@
-# Http adapter integration tests
+# HTTP Adapter integration tests
 
 [![Latest Version](https://img.shields.io/github/release/php-http/adapter-integration-tests.svg?style=flat-square)](https://github.com/php-http/adapter-integration-tests/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)

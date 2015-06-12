@@ -4,7 +4,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Total Downloads](https://img.shields.io/packagist/dt/php-http/adapter-integration-tests.svg?style=flat-square)](https://packagist.org/packages/php-http/adapter-integration-tests)
 
-**HTTP adapter integration tests.**
+**HTTP Adapter integration tests.**
 
 
 ## Install

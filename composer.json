@@ -1,6 +1,6 @@
 {
     "name": "php-http/adapter-integration-tests",
-    "description": "Adapter integration tests",
+    "description": "HTTP Adapter integration tests",
     "license": "MIT",
     "keywords": ["http", "integration", "tests"],
     "homepage": "http://php-http.org",

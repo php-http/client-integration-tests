@@ -21,6 +21,17 @@ $ composer require php-http/adapter-integration-tests
 This package should not be used on its own. It provides integration tests for HTTP Adapters.
 
 
+### Running tests for HTTP Adapters
+
+Start the HTTP Test server:
+
+``` bash
+$ vendor/bin/http_test_server
+```
+
+Run tests.
+
+
 ## Testing
 
 ``` bash

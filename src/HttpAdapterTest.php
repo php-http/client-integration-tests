@@ -94,8 +94,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         unset($this->httpAdapter);
     }
 
-    abstract public function testGetName();
-
     /**
      * @return HttpClient
      */
@@ -417,10 +415,8 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
 
         if ($options['body'] === null) {
             $this->assertEmpty($response->getBody()->getContents());
-            $this->assertEmpty((string) $response->getBody());
         } else {
             $this->assertContains($options['body'], $response->getBody()->getContents());
-            $this->assertContains($options['body'], (string) $response->getBody());
         }
     }
 

@@ -57,6 +57,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     protected $defaultHeaders = [
         'Connection' => 'close',
         'User-Agent' => 'PHP HTTP Adapter',
+        'Content-Length' => '0'
     ];
 
     /**
@@ -105,6 +106,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendRequest($method, $uri, array $headers, $body)
     {
+        if ($body != null) {
+            $headers['Content-Length'] = (string)strlen($body);
+        }
+
         $request = self::$messageFactory->createRequest(
             $method,
             $uri,
@@ -132,6 +137,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     {
         if ($protocolVersion === '1.0') {
             $body = null;
+        }
+
+        if ($body != null) {
+            $headers['Content-Length'] = (string)strlen($body);
         }
 
         $request = self::$messageFactory->createRequest(
@@ -239,12 +248,19 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $messageFactory = MessageFactoryDiscovery::find();
 
         foreach ($requests as &$request) {
+            $headers = $request[2];
+            $body    = $request[3];
+
+            if ($body !== null) {
+                $headers['Content-Length'] = strlen($body);
+            }
+
             $request = $messageFactory->createRequest(
                 $request[0],
                 $request[1],
                 '1.1',
-                $request[2],
-                $request[3]
+                $headers,
+                $body
             );
         }
 
@@ -270,12 +286,19 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $cartesianProduct = new CartesianProduct($sets);
 
         foreach ($cartesianProduct as $request) {
+            $headers = $request[2];
+            $body    = $request[3];
+
+            if ($body !== null) {
+                $headers['Content-Length'] = strlen($body);
+            }
+
             $requests[] = $messageFactory->createRequest(
                 $request[0],
                 $request[1],
                 '1.1',
-                $request[2],
-                $request[3]
+                $headers,
+                $body
             );
         }
 

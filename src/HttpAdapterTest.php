@@ -11,9 +11,9 @@
 
 namespace Http\Adapter\Tests;
 
-use Http\Adapter\HttpAdapter;
-use Http\Adapter\HttpAdapterException;
-use Http\Adapter\Exception\MultiHttpAdapterException;
+use Http\Client\HttpClient;
+use Http\Client\Exception\RequestException;
+use Http\Client\Exception\BatchException;
 use Http\Message\MessageFactory;
 use Http\Discovery\MessageFactoryDiscovery;
 use Nerd\CartesianProduct\CartesianProduct;
@@ -36,7 +36,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     protected static $messageFactory;
 
     /**
-     * @var HttpAdapter
+     * @var HttpClient
      */
     protected $httpAdapter;
 
@@ -57,6 +57,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     protected $defaultHeaders = [
         'Connection' => 'close',
         'User-Agent' => 'PHP HTTP Adapter',
+        'Content-Length' => '0'
     ];
 
     /**
@@ -94,10 +95,8 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         unset($this->httpAdapter);
     }
 
-    abstract public function testGetName();
-
     /**
-     * @return HttpAdapter
+     * @return HttpClient
      */
     abstract protected function createHttpAdapter();
 
@@ -107,6 +106,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendRequest($method, $uri, array $headers, $body)
     {
+        if ($body != null) {
+            $headers['Content-Length'] = (string)strlen($body);
+        }
+
         $request = self::$messageFactory->createRequest(
             $method,
             $uri,
@@ -136,6 +139,10 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
             $body = null;
         }
 
+        if ($body != null) {
+            $headers['Content-Length'] = (string)strlen($body);
+        }
+
         $request = self::$messageFactory->createRequest(
             $method = 'GET',
             $uriAndOutcome[0],
@@ -157,7 +164,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Http\Adapter\Exception\HttpAdapterException
+     * @expectedException \Http\Client\Exception
      * @group             integration
      */
     public function testSendWithInvalidUri()
@@ -178,9 +185,9 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendRequests(array $requests)
     {
-        $responses = $this->httpAdapter->sendRequests($requests);
+        $batchResult = $this->httpAdapter->sendRequests($requests);
 
-        $this->assertMultiResponses($responses, $requests);
+        $this->assertMultiResponses($batchResult->getResponses(), $requests);
     }
 
     /**
@@ -192,9 +199,9 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         try {
             $this->httpAdapter->sendRequests(array_merge($requests, $erroredRequests));
             $this->fail();
-        } catch (MultiHttpAdapterException $e) {
-            $this->assertMultiResponses($e->getResponses(), $requests);
-            $this->assertMultiExceptions($e->getExceptions(), $erroredRequests);
+        } catch (BatchException $e) {
+            $this->assertMultiResponses($e->getResult()->getResponses(), $requests);
+            $this->assertMultiExceptions($e->getResult()->getExceptions(), $erroredRequests);
         }
     }
 
@@ -241,12 +248,19 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $messageFactory = MessageFactoryDiscovery::find();
 
         foreach ($requests as &$request) {
+            $headers = $request[2];
+            $body    = $request[3];
+
+            if ($body !== null) {
+                $headers['Content-Length'] = strlen($body);
+            }
+
             $request = $messageFactory->createRequest(
                 $request[0],
                 $request[1],
                 '1.1',
-                $request[2],
-                $request[3]
+                $headers,
+                $body
             );
         }
 
@@ -272,12 +286,19 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $cartesianProduct = new CartesianProduct($sets);
 
         foreach ($cartesianProduct as $request) {
+            $headers = $request[2];
+            $body    = $request[3];
+
+            if ($body !== null) {
+                $headers['Content-Length'] = strlen($body);
+            }
+
             $requests[] = $messageFactory->createRequest(
                 $request[0],
                 $request[1],
                 '1.1',
-                $request[2],
-                $request[3]
+                $headers,
+                $body
             );
         }
 
@@ -417,10 +438,8 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
 
         if ($options['body'] === null) {
             $this->assertEmpty($response->getBody()->getContents());
-            $this->assertEmpty((string) $response->getBody());
         } else {
             $this->assertContains($options['body'], $response->getBody()->getContents());
-            $this->assertContains($options['body'], (string) $response->getBody());
         }
     }
 
@@ -470,15 +489,14 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param HttpAdapterException[] $exceptions
-     * @param array                  $requests
+     * @param RequestException[] $exceptions
+     * @param array              $requests
      */
     private function assertMultiExceptions(array $exceptions, array $requests)
     {
         $this->assertCount(count($requests), $exceptions);
 
         foreach ($exceptions as $exception) {
-            $this->assertTrue($exception->hasRequest());
             $this->assertInstanceOf(
                 'Psr\Http\Message\RequestInterface',
                 $exception->getRequest()

@@ -180,32 +180,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider requestsProvider
-     * @group        integration
-     */
-    public function testSendRequests(array $requests)
-    {
-        $batchResult = $this->httpAdapter->sendRequests($requests);
-
-        $this->assertMultiResponses($batchResult->getResponses(), $requests);
-    }
-
-    /**
-     * @dataProvider erroredRequestsProvider
-     * @group        integration
-     */
-    public function testSendErroredRequests(array $requests, array $erroredRequests)
-    {
-        try {
-            $this->httpAdapter->sendRequests(array_merge($requests, $erroredRequests));
-            $this->fail();
-        } catch (BatchException $e) {
-            $this->assertMultiResponses($e->getResult()->getResponses(), $requests);
-            $this->assertMultiExceptions($e->getResult()->getExceptions(), $erroredRequests);
-        }
-    }
-
-    /**
      * @return array
      */
     public function requestProvider()
@@ -237,73 +211,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $cartesianProduct = new CartesianProduct($sets);
 
         return $cartesianProduct->compute();
-    }
-
-    /**
-     * @return array
-     */
-    public function requestsProvider()
-    {
-        $requests = $this->requestProvider();
-        $messageFactory = MessageFactoryDiscovery::find();
-
-        foreach ($requests as &$request) {
-            $headers = $request[2];
-            $body    = $request[3];
-
-            if ($body !== null) {
-                $headers['Content-Length'] = strlen($body);
-            }
-
-            $request = $messageFactory->createRequest(
-                $request[0],
-                $request[1],
-                '1.1',
-                $headers,
-                $body
-            );
-        }
-
-        return [[$requests]];
-    }
-
-    /**
-     * @return array
-     */
-    public function erroredRequestsProvider()
-    {
-        $requests = [];
-        $erroredRequests = [];
-        $messageFactory = MessageFactoryDiscovery::find();
-
-        $sets = [
-            'methods' => ['GET'],
-            'uris'    => [$this->getUri(), $this->getInvalidUri()],
-            'headers' => $this->getHeaders(),
-            'body'    => $this->getBodies(),
-        ];
-
-        $cartesianProduct = new CartesianProduct($sets);
-
-        foreach ($cartesianProduct as $request) {
-            $headers = $request[2];
-            $body    = $request[3];
-
-            if ($body !== null) {
-                $headers['Content-Length'] = strlen($body);
-            }
-
-            $requests[] = $messageFactory->createRequest(
-                $request[0],
-                $request[1],
-                '1.1',
-                $headers,
-                $body
-            );
-        }
-
-        // First x are simple requests, all-x are errored requests
-        return [array_chunk($requests, count($requests)/2)];
     }
 
     /**
@@ -476,31 +383,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
 
             $this->assertArrayHasKey($name, $request['SERVER']);
             $this->assertSame($value, $request['SERVER'][$name]);
-        }
-    }
-
-    /**
-     * @param ResponseInterface[] $responses
-     * @param array               $requests
-     */
-    private function assertMultiResponses(array $responses, array $requests)
-    {
-        $this->assertCount(count($requests), $responses);
-    }
-
-    /**
-     * @param RequestException[] $exceptions
-     * @param array              $requests
-     */
-    private function assertMultiExceptions(array $exceptions, array $requests)
-    {
-        $this->assertCount(count($requests), $exceptions);
-
-        foreach ($exceptions as $exception) {
-            $this->assertInstanceOf(
-                'Psr\Http\Message\RequestInterface',
-                $exception->getRequest()
-            );
         }
     }
 

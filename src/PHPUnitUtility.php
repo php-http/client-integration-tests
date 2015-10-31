@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Http\Adapter\Tests;
+namespace Http\Client\Tests;
 
 /**
  * PHPUnit utility.

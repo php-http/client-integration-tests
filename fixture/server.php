@@ -11,7 +11,7 @@
 
 require_once __DIR__.'/../src/PHPUnitUtility.php';
 
-use Http\Adapter\Tests\PHPUnitUtility;
+use Http\Client\Tests\PHPUnitUtility;
 
 $file = fopen(PHPUnitUtility::getFile(true, 'php-http-adapter.log'), 'c');
 flock($file, LOCK_EX);

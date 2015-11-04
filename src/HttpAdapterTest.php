@@ -113,9 +113,9 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $request = self::$messageFactory->createRequest(
             $method,
             $uri,
-            '1.1',
             $headers,
-            $body
+            $body,
+            '1.1'
         );
 
         $response = $this->httpAdapter->sendRequest($request);
@@ -146,9 +146,9 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $request = self::$messageFactory->createRequest(
             $method = 'GET',
             $uriAndOutcome[0],
-            $protocolVersion,
             $headers,
-            $body
+            $body,
+            $protocolVersion
         );
 
         $response = $this->httpAdapter->sendRequest($request);
@@ -172,8 +172,9 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         $request = self::$messageFactory->createRequest(
             'GET',
             $this->getInvalidUri(),
-            '1.1',
-            $this->defaultHeaders
+            $this->defaultHeaders,
+            null,
+            '1.1'
         );
 
         $this->httpAdapter->sendRequest($request);

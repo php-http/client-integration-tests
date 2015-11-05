@@ -9,21 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Http\Adapter\Tests;
+namespace Http\Client\Tests;
 
-use Http\Client\HttpClient;
-use Http\Client\Exception\RequestException;
-use Http\Client\Exception\BatchException;
-use Http\Message\MessageFactory;
 use Http\Discovery\MessageFactoryDiscovery;
+use Http\Message\MessageFactory;
 use Nerd\CartesianProduct\CartesianProduct;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * @author GeLo <geloen.eric@gmail.com>
- */
-abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
+abstract class HttpBaseTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var string
@@ -34,11 +27,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      * @var MessageFactory
      */
     protected static $messageFactory;
-
-    /**
-     * @var HttpClient
-     */
-    protected $httpAdapter;
 
     /**
      * @var array
@@ -77,107 +65,6 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
         if (file_exists(self::$logPath)) {
             unlink(self::$logPath);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        $this->httpAdapter = $this->createHttpAdapter();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        unset($this->httpAdapter);
-    }
-
-    /**
-     * @return HttpClient
-     */
-    abstract protected function createHttpAdapter();
-
-    /**
-     * @dataProvider requestProvider
-     * @group        integration
-     */
-    public function testSendRequest($method, $uri, array $headers, $body)
-    {
-        if ($body != null) {
-            $headers['Content-Length'] = (string)strlen($body);
-        }
-
-        $request = self::$messageFactory->createRequest(
-            $method,
-            $uri,
-            $headers,
-            $body,
-            '1.1'
-        );
-
-        $response = $this->httpAdapter->sendRequest($request);
-
-        $this->assertResponse(
-            $response,
-            [
-                'body' => $method === 'HEAD' ? null : 'Ok',
-            ]
-        );
-        $this->assertRequest($method, $headers, $body, '1.1');
-    }
-
-    /**
-     * @dataProvider requestWithOutcomeProvider
-     * @group        integration
-     */
-    public function testSendRequestWithOutcome($uriAndOutcome, $protocolVersion, array $headers, $body)
-    {
-        if ($protocolVersion === '1.0') {
-            $body = null;
-        }
-
-        if ($body != null) {
-            $headers['Content-Length'] = (string)strlen($body);
-        }
-
-        $request = self::$messageFactory->createRequest(
-            $method = 'GET',
-            $uriAndOutcome[0],
-            $headers,
-            $body,
-            $protocolVersion
-        );
-
-        $response = $this->httpAdapter->sendRequest($request);
-
-        $outcome = $uriAndOutcome[1];
-        $outcome['protocolVersion'] = $protocolVersion;
-
-        $this->assertResponse(
-            $response,
-            $outcome
-        );
-        $this->assertRequest($method, $headers, $body, $protocolVersion);
-    }
-
-    /**
-     * @expectedException \Http\Client\Exception
-     * @group             integration
-     */
-    public function testSendWithInvalidUri()
-    {
-        $request = self::$messageFactory->createRequest(
-            'GET',
-            $this->getInvalidUri(),
-            $this->defaultHeaders,
-            null,
-            '1.1'
-        );
-
-        $this->httpAdapter->sendRequest($request);
     }
 
     /**
@@ -235,7 +122,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
      *
      * @return string|null
      */
-    private function getUri(array $query = [])
+    protected function getUri(array $query = [])
     {
         return !empty($query)
             ? PHPUnitUtility::getUri().'?'.http_build_query($query, null, '&')
@@ -245,7 +132,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
-    private function getInvalidUri()
+    protected function getInvalidUri()
     {
         return 'http://invalid.php-http.org';
     }
@@ -390,7 +277,7 @@ abstract class HttpAdapterTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    private function getRequest()
+    protected function getRequest()
     {
         $file = fopen(self::$logPath, 'r');
         flock($file, LOCK_EX);

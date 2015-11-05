@@ -15,12 +15,13 @@
         "phpunit/phpunit": "^4.4",
         "php-http/discovery": "~0.2@dev",
         "php-http/httplug": "~1.0@dev",
+        "php-http/httplug-async": "~0.1@dev",
         "guzzlehttp/psr7": "^1.0",
         "th3n3rd/cartesian-product": "^0.3"
     },
     "autoload": {
         "psr-4": {
-            "Http\\Adapter\\Tests\\": "src/"
+            "Http\\Client\\Tests\\": "src/"
         }
     },
     "bin": [

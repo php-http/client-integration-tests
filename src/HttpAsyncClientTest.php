@@ -41,7 +41,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         );
 
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
-        $this->assertInstanceOf('Http\Client\Promise', $promise);
+        $this->assertInstanceOf('Http\Promise\Promise', $promise);
 
         $response = null;
         $promise->then()->then()->then(function ($r) use(&$response) {
@@ -66,7 +66,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         );
 
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
-        $this->assertInstanceOf('Http\Client\Promise', $promise);
+        $this->assertInstanceOf('Http\Promise\Promise', $promise);
 
         $exception = null;
         $response  = null;
@@ -101,7 +101,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         );
 
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
-        $this->assertInstanceOf('Http\Client\Promise', $promise);
+        $this->assertInstanceOf('Http\Promise\Promise', $promise);
 
         $response = null;
         $promise->then(function ($r) use(&$response) {
@@ -132,7 +132,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $exception = null;
         $response  = null;
         $promise   = $this->httpAsyncClient->sendAsyncRequest($request);
-        $this->assertInstanceOf('Http\Client\Promise', $promise);
+        $this->assertInstanceOf('Http\Promise\Promise', $promise);
 
         $promise->then(function ($r) use(&$response) {
             $response = $r;
@@ -177,7 +177,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
             $response = $r;
         });
 
-        $this->assertInstanceOf('Http\Client\Promise', $promise);
+        $this->assertInstanceOf('Http\Promise\Promise', $promise);
         $promise->wait();
         $this->assertResponse(
             $response,
@@ -186,4 +186,3 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $this->assertRequest($method, $headers, $body, $protocolVersion);
     }
 }
- 

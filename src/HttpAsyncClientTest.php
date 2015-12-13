@@ -46,9 +46,11 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $response = null;
         $promise->then()->then()->then(function ($r) use(&$response) {
             $response = $r;
+
+            return $response;
         });
 
-        $promise->wait();
+        $promise->wait(false);
         $this->assertResponse(
             $response,
             [
@@ -72,11 +74,15 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $response  = null;
         $promise->then()->then()->then(function ($r) use(&$response) {
             $response = $r;
+
+            return $response;
         }, function ($e) use (&$exception) {
             $exception = $e;
+
+            throw $e;
         });
 
-        $promise->wait();
+        $promise->wait(false);
 
         $this->assertNull($response);
         $this->assertNotNull($exception);
@@ -106,6 +112,8 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $response = null;
         $promise->then(function ($r) use(&$response) {
             $response = $r;
+
+            return $response;
         });
 
         $promise->wait();
@@ -136,10 +144,14 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
 
         $promise->then(function ($r) use(&$response) {
             $response = $r;
+
+            return $response;
         }, function ($e) use (&$exception) {
             $exception = $e;
+
+            throw $e;
         });
-        $promise->wait();
+        $promise->wait(false);
 
         $this->assertNull($response);
         $this->assertNotNull($exception);
@@ -175,6 +187,8 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $promise  = $this->httpAsyncClient->sendAsyncRequest($request);
         $promise->then(function ($r) use(&$response) {
             $response = $r;
+
+            return $response;
         });
 
         $this->assertInstanceOf('Http\Promise\Promise', $promise);

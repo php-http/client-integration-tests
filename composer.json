@@ -3,7 +3,7 @@
     "description": "HTTP Adapter integration tests",
     "license": "MIT",
     "keywords": ["http", "integration", "tests"],
-    "homepage": "http://php-http.org",
+    "homepage": "http://httplug.io",
     "authors": [
         {
             "name": "Eric GELOEN",
@@ -13,11 +13,13 @@
     "require": {
         "php": ">=5.4",
         "phpunit/phpunit": "^4.5",
-        "php-http/discovery": "^0.5",
+        "php-http/httplug": "^1.0",
+        "php-http/discovery": "^0.6.4",
         "php-http/message": "~0.2.1",
-        "php-http/httplug": "~1.0@dev",
         "guzzlehttp/psr7": "^1.0",
-        "th3n3rd/cartesian-product": "^0.3"
+        "th3n3rd/cartesian-product": "^0.3",
+        "puli/cli": "~1.0.0-beta9@dev",
+        "justinrainbow/json-schema": "<1.5"
     },
     "autoload": {
         "psr-4": {
@@ -33,5 +35,5 @@
         }
     },
     "prefer-stable": true,
-    "minimum-stability": "dev"
+    "minimum-stability": "RC"
 }

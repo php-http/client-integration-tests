@@ -8,6 +8,10 @@
         {
             "name": "Eric GELOEN",
             "email": "geloen.eric@gmail.com"
+        },
+        {
+            "name": "Márk Sági-Kazár",
+            "email": "mark.sagikazar@gmail.com"
         }
     ],
     "require": {
@@ -31,9 +35,9 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2-dev"
+            "dev-master": "0.3-dev"
         }
     },
     "prefer-stable": true,
-    "minimum-stability": "RC"
+    "minimum-stability": "dev"
 }

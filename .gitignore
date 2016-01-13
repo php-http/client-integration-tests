@@ -1,3 +1,5 @@
+.puli/
 build/
 vendor/
 composer.lock
+puli.json

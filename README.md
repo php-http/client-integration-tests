@@ -32,16 +32,9 @@ $ vendor/bin/http_test_server
 Run tests.
 
 
-## Testing
-
-``` bash
-$ phpunit
-```
-
-
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please see our [contributing guide](http://docs.php-http.org/en/latest/development/contributing.html).
 
 
 ## Security

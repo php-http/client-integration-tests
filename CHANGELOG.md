@@ -1,6 +1,13 @@
 # Change Log
 
 
+## 0.3.1 - 2016-02-11
+
+### Changed
+
+- Updated message dependency
+
+
 ## 0.3.0 - 2016-01-21
 
 ### Changed

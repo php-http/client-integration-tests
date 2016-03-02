@@ -3,8 +3,8 @@
 namespace Http\Client\Tests;
 
 use Http\Client\HttpClient;
-use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
+use Http\Message\MessageFactory\GuzzleMessageFactory;
 
 abstract class HttpFeatureTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ abstract class HttpFeatureTest extends \PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$messageFactory = MessageFactoryDiscovery::find();
+        self::$messageFactory = new GuzzleMessageFactory();
     }
 
     /**

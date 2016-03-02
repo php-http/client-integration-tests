@@ -2,8 +2,8 @@
 
 namespace Http\Client\Tests;
 
-use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
+use Http\Message\MessageFactory\GuzzleMessageFactory;
 use Nerd\CartesianProduct\CartesianProduct;
 use Psr\Http\Message\ResponseInterface;
 
@@ -24,10 +24,10 @@ abstract class HttpBaseTest extends \PHPUnit_Framework_TestCase
      */
     protected $defaultOptions = [
         'protocolVersion' => '1.1',
-        'statusCode'      => 200,
-        'reasonPhrase'    => 'OK',
-        'headers'         => ['Content-Type' => 'text/html'],
-        'body'            => 'Ok',
+        'statusCode' => 200,
+        'reasonPhrase' => 'OK',
+        'headers' => ['Content-Type' => 'text/html'],
+        'body' => 'Ok',
     ];
 
     /**
@@ -36,7 +36,7 @@ abstract class HttpBaseTest extends \PHPUnit_Framework_TestCase
     protected $defaultHeaders = [
         'Connection' => 'close',
         'User-Agent' => 'PHP HTTP Adapter',
-        'Content-Length' => '0'
+        'Content-Length' => '0',
     ];
 
     /**
@@ -45,7 +45,7 @@ abstract class HttpBaseTest extends \PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         self::$logPath = PHPUnitUtility::getFile(true, 'php-http-adapter.log');
-        self::$messageFactory = MessageFactoryDiscovery::find();
+        self::$messageFactory = new GuzzleMessageFactory();
     }
 
     /**
@@ -65,9 +65,9 @@ abstract class HttpBaseTest extends \PHPUnit_Framework_TestCase
     {
         $sets = [
             'methods' => $this->getMethods(),
-            'uris'    => [$this->getUri()],
+            'uris' => [$this->getUri()],
             'headers' => $this->getHeaders(),
-            'body'    => $this->getBodies(),
+            'body' => $this->getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -81,10 +81,10 @@ abstract class HttpBaseTest extends \PHPUnit_Framework_TestCase
     public function requestWithOutcomeProvider()
     {
         $sets = [
-            'urisAndOutcomes'  => $this->getUrisAndOutcomes(),
+            'urisAndOutcomes' => $this->getUrisAndOutcomes(),
             'protocolVersions' => $this->getProtocolVersions(),
-            'headers'          => $this->getHeaders(),
-            'body'             => $this->getBodies(),
+            'headers' => $this->getHeaders(),
+            'body' => $this->getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -137,23 +137,23 @@ abstract class HttpBaseTest extends \PHPUnit_Framework_TestCase
             [
                 $this->getUri(['client_error' => true]),
                 [
-                    'statusCode'   => 400,
+                    'statusCode' => 400,
                     'reasonPhrase' => 'Bad Request',
                 ],
             ],
             [
                 $this->getUri(['server_error' => true]),
                 [
-                    'statusCode'   => 500,
+                    'statusCode' => 500,
                     'reasonPhrase' => 'Internal Server Error',
                 ],
             ],
             [
                 $this->getUri(['redirect' => true]),
                 [
-                    'statusCode'   => 302,
+                    'statusCode' => 302,
                     'reasonPhrase' => 'Found',
-                    'body'         => 'Redirect',
+                    'body' => 'Redirect',
                 ],
             ],
         ];

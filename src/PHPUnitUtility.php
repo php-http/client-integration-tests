@@ -12,7 +12,7 @@ class PHPUnitUtility
     /**
      * Gets the uri.
      *
-     * @return string|boolean The uri or FALSE if there is none.
+     * @return string|bool The uri or FALSE if there is none.
      */
     public static function getUri()
     {
@@ -22,7 +22,7 @@ class PHPUnitUtility
     /**
      * Gets the file.
      *
-     * @param boolean     $tmp  TRUE if the file should be in the "/tmp" directory else FALSE.
+     * @param bool        $tmp  TRUE if the file should be in the "/tmp" directory else FALSE.
      * @param string|null $name The name.
      *
      * @return string The file.

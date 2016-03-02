@@ -18,15 +18,15 @@ class FeatureTestListener extends \PHPUnit_TextUI_ResultPrinter
             $feature = $feature[0];
         }
 
-        echo sprintf("%-40.s : ", $feature);
+        echo sprintf('%-40.s : ', $feature);
     }
 
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
         if (!$this->lastTestFailed) {
-            echo $this->formatWithColor('fg-green', "Supported"). "\n";
+            echo $this->formatWithColor('fg-green', 'Supported')."\n";
         } else {
-            echo $this->formatWithColor('fg-red', "Not supported"). "\n";
+            echo $this->formatWithColor('fg-red', 'Not supported')."\n";
         }
 
         $this->lastTestFailed = false;
@@ -34,8 +34,8 @@ class FeatureTestListener extends \PHPUnit_TextUI_ResultPrinter
 
     private function extractFeature(\PHPUnit_Framework_Test $test)
     {
-        $class      = get_class($test);
-        $method     = $test->getName();
+        $class = get_class($test);
+        $method = $test->getName();
         $reflection = new \ReflectionMethod($class, $method);
 
         return $this->parseDocBlock($reflection->getDocComment(), '@feature');
@@ -50,7 +50,7 @@ class FeatureTestListener extends \PHPUnit_TextUI_ResultPrinter
         }
 
         $regex = "/{$tag} (.*)(\\r\\n|\\r|\\n)/U";
-        preg_match_all( $regex, $doc_block, $matches );
+        preg_match_all($regex, $doc_block, $matches);
 
         if (empty($matches[1])) {
             return [];
@@ -59,7 +59,7 @@ class FeatureTestListener extends \PHPUnit_TextUI_ResultPrinter
         $matches = $matches[1];
 
         foreach ($matches as $ix => $match) {
-            $matches[ $ix ] = trim( $match );
+            $matches[ $ix ] = trim($match);
         }
 
         return $matches;

@@ -1,6 +1,13 @@
 # Change Log
 
 
+## 0.4.0 - 2016-03-02
+
+### Removed
+
+- Discovery dependency
+
+
 ## 0.3.1 - 2016-02-11
 
 ### Changed

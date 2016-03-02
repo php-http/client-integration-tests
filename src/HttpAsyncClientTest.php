@@ -44,7 +44,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $this->assertInstanceOf('Http\Promise\Promise', $promise);
 
         $response = null;
-        $promise->then()->then()->then(function ($r) use(&$response) {
+        $promise->then()->then()->then(function ($r) use (&$response) {
             $response = $r;
 
             return $response;
@@ -71,8 +71,8 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $this->assertInstanceOf('Http\Promise\Promise', $promise);
 
         $exception = null;
-        $response  = null;
-        $promise->then()->then()->then(function ($r) use(&$response) {
+        $response = null;
+        $promise->then()->then()->then(function ($r) use (&$response) {
             $response = $r;
 
             return $response;
@@ -96,7 +96,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
     public function testAsyncSendRequest($method, $uri, array $headers, $body)
     {
         if ($body != null) {
-            $headers['Content-Length'] = (string)strlen($body);
+            $headers['Content-Length'] = (string) strlen($body);
         }
 
         $request = self::$messageFactory->createRequest(
@@ -110,7 +110,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $this->assertInstanceOf('Http\Promise\Promise', $promise);
 
         $response = null;
-        $promise->then(function ($r) use(&$response) {
+        $promise->then(function ($r) use (&$response) {
             $response = $r;
 
             return $response;
@@ -138,11 +138,11 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         );
 
         $exception = null;
-        $response  = null;
-        $promise   = $this->httpAsyncClient->sendAsyncRequest($request);
+        $response = null;
+        $promise = $this->httpAsyncClient->sendAsyncRequest($request);
         $this->assertInstanceOf('Http\Promise\Promise', $promise);
 
-        $promise->then(function ($r) use(&$response) {
+        $promise->then(function ($r) use (&$response) {
             $response = $r;
 
             return $response;
@@ -169,7 +169,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         }
 
         if ($body != null) {
-            $headers['Content-Length'] = (string)strlen($body);
+            $headers['Content-Length'] = (string) strlen($body);
         }
 
         $request = self::$messageFactory->createRequest(
@@ -184,8 +184,8 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $outcome['protocolVersion'] = $protocolVersion;
 
         $response = null;
-        $promise  = $this->httpAsyncClient->sendAsyncRequest($request);
-        $promise->then(function ($r) use(&$response) {
+        $promise = $this->httpAsyncClient->sendAsyncRequest($request);
+        $promise->then(function ($r) use (&$response) {
             $response = $r;
 
             return $response;

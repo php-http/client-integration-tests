@@ -42,7 +42,7 @@ abstract class HttpClientTest extends HttpBaseTest
     public function testSendRequest($method, $uri, array $headers, $body)
     {
         if ($body != null) {
-            $headers['Content-Length'] = (string)strlen($body);
+            $headers['Content-Length'] = (string) strlen($body);
         }
 
         $request = self::$messageFactory->createRequest(
@@ -74,7 +74,7 @@ abstract class HttpClientTest extends HttpBaseTest
         }
 
         if ($body != null) {
-            $headers['Content-Length'] = (string)strlen($body);
+            $headers['Content-Length'] = (string) strlen($body);
         }
 
         $request = self::$messageFactory->createRequest(

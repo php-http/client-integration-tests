@@ -1,6 +1,13 @@
 # Change Log
 
 
+## 0.5.1 - 2016-07-18
+
+### Fixed
+
+- Old name
+
+
 ## 0.5.0 - 2016-07-18
 
 ### Changed

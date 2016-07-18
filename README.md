@@ -1,10 +1,10 @@
-# HTTP Adapter integration tests
+# HTTP Client integration tests
 
-[![Latest Version](https://img.shields.io/github/release/php-http/adapter-integration-tests.svg?style=flat-square)](https://github.com/php-http/adapter-integration-tests/releases)
+[![Latest Version](https://img.shields.io/github/release/php-http/client-integration-tests.svg?style=flat-square)](https://github.com/php-http/client-integration-tests/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Total Downloads](https://img.shields.io/packagist/dt/php-http/adapter-integration-tests.svg?style=flat-square)](https://packagist.org/packages/php-http/adapter-integration-tests)
+[![Total Downloads](https://img.shields.io/packagist/dt/php-http/client-integration-tests.svg?style=flat-square)](https://packagist.org/packages/php-http/client-integration-tests)
 
-**HTTP Adapter integration tests.**
+**HTTP Client integration tests.**
 
 
 ## Install
@@ -12,7 +12,7 @@
 Via Composer
 
 ``` bash
-$ composer require php-http/adapter-integration-tests
+$ composer require php-http/client-integration-tests
 ```
 
 

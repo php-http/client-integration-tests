@@ -1,8 +1,8 @@
 {
-    "name": "php-http/adapter-integration-tests",
-    "description": "HTTP Adapter integration tests",
+    "name": "php-http/client-integration-tests",
+    "description": "HTTP Client integration tests",
     "license": "MIT",
-    "keywords": ["http", "integration", "tests"],
+    "keywords": ["http", "client", "integration", "tests"],
     "homepage": "http://httplug.io",
     "authors": [
         {
@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": ">=5.4",
-        "phpunit/phpunit": "^4.5",
+        "phpunit/phpunit": "^4.5 || ^5.0",
         "php-http/httplug": "^1.0",
         "php-http/message": "^1.0",
         "guzzlehttp/psr7": "^1.0",
@@ -32,7 +32,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5-dev"
+            "dev-master": "0.6-dev"
         }
     }
 }

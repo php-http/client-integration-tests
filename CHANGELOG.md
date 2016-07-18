@@ -1,6 +1,14 @@
 # Change Log
 
 
+## 0.5.0 - 2016-07-18
+
+### Changed
+
+- Renamed to client-integration-tests
+- Improved pacakge
+
+
 ## 0.4.0 - 2016-03-02
 
 ### Removed

@@ -1,5 +1,6 @@
-.puli/
-build/
-vendor/
-composer.lock
-puli.json
+/behat.yml
+/build/
+/composer.lock
+/phpspec.yml
+/phpunit.xml
+/vendor/

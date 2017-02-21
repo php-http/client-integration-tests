@@ -1,0 +1,39 @@
+language: php
+
+sudo: false
+
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+
+php:
+    - 7.1
+
+env:
+    global:
+        - TEST_COMMAND="composer test"
+    matrix:
+        - PACKAGE="php-http/curl-client:dev-master" SUITE="curl"
+        - PACKAGE="php-http/socket-client:dev-master" SUITE="Socket"
+        - PACKAGE="php-http/guzzle5-adapter:dev-master" SUITE="Guzzle5"
+        - PACKAGE="php-http/guzzle6-adapter:dev-master" SUITE="Guzzle6"
+        - PACKAGE="php-http/react-adapter:dev-master" SUITE="React"
+        - PACKAGE="php-http/buzz-adapter:dev-master" SUITE="Buzz"
+
+branches:
+    except:
+        - /^analysis-.*$/
+
+before_install:
+    - phpenv config-rm xdebug.ini
+
+install:
+    - composer require ${PACKAGE} --no-update
+    - travis_retry composer update --prefer-dist --no-interaction
+
+before_script:
+    - vendor/bin/http_test_server > /dev/null 2>&1 &
+
+script:
+    - ./vendor/bin/phpunit --testsuite ${SUITE}
+

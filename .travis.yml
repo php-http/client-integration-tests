@@ -10,15 +10,18 @@ php:
     - 7.1
 
 env:
-    global:
-        - TEST_COMMAND="composer test"
-    matrix:
-        - PACKAGE="php-http/curl-client:dev-master" SUITE="curl"
-        - PACKAGE="php-http/socket-client:dev-master" SUITE="Socket"
-        - PACKAGE="php-http/guzzle5-adapter:dev-master" SUITE="Guzzle5"
-        - PACKAGE="php-http/guzzle6-adapter:dev-master" SUITE="Guzzle6"
-        - PACKAGE="php-http/react-adapter:dev-master" SUITE="React"
-        - PACKAGE="php-http/buzz-adapter:dev-master" SUITE="Buzz"
+    - SUITE="curl" PACKAGE="php-http/curl-client:dev-master zendframework/zend-diactoros"
+    - SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
+    - SUITE="Guzzle5" PACKAGE="php-http/guzzle5-adapter:dev-master"
+    - SUITE="Guzzle6" PACKAGE="php-http/guzzle6-adapter:dev-master"
+    - SUITE="React" PACKAGE="php-http/react-adapter:dev-master"
+    - SUITE="Buzz" PACKAGE="php-http/buzz-adapter:dev-master"
+    - SUITE="CakePHP" PACKAGE="php-http/buzz-adapter:dev-master"
+    - SUITE="Zend" PACKAGE="php-http/buzz-adapter:dev-master"
+
+matrix:
+    allow_failures:
+        - env: SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
 
 branches:
     except:
@@ -32,7 +35,7 @@ install:
     - travis_retry composer update --prefer-source --no-interaction
 
 before_script:
-    - vendor/bin/http_test_server > /dev/null 2>&1 &
+    - bin/http_test_server > /dev/null 2>&1 &
 
 script:
     - ./vendor/bin/phpunit --testsuite ${SUITE}

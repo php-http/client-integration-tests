@@ -19,6 +19,12 @@
         <testsuite name="React">
             <directory>vendor/php-http/react-adapter/tests</directory>
         </testsuite>
+        <testsuite name="CakePHP">
+            <directory>vendor/php-http/cakephp-adapter/tests</directory>
+        </testsuite>
+        <testsuite name="Zend">
+            <directory>vendor/php-http/zend-adapter/tests</directory>
+        </testsuite>
     </testsuites>
     <php>
         <server name="TEST_SERVER" value="http://127.0.0.1:10000/server.php" />

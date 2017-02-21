@@ -29,7 +29,7 @@ before_install:
 
 install:
     - composer require ${PACKAGE} --no-update
-    - travis_retry composer update --prefer-dist --no-interaction
+    - travis_retry composer update --prefer-source --no-interaction
 
 before_script:
     - vendor/bin/http_test_server > /dev/null 2>&1 &

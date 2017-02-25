@@ -27,6 +27,18 @@
             "Http\\Client\\Tests\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Http\\Client\\Curl\\Tests\\": "vendor/php-http/curl-client/tests/",
+            "Http\\Client\\Socket\\Tests\\": "vendor/php-http/socket-client/tests/",
+            "Http\\Adapter\\Guzzle5\\Tests\\": "vendor/php-http/guzzle5-adapter/tests/",
+            "Http\\Adapter\\Guzzle6\\Tests\\": "vendor/php-http/guzzle6-adapter/tests/",
+            "Http\\Adapter\\Buzz\\Tests\\": "vendor/php-http/buzz-adapter/tests/",
+            "Http\\Adapter\\React\\Tests\\": "vendor/php-http/react-adapter/tests/",
+            "Http\\Adapter\\Cake\\Tests\\": "vendor/php-http/cachephp-adapter/tests/",
+            "Http\\Adapter\\Zend\\Tests\\": "vendor/php-http/zend-adapter/tests/"
+        }
+    },
     "bin": [
         "bin/http_test_server"
     ],

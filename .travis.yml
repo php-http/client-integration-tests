@@ -7,7 +7,7 @@ cache:
         - $HOME/.composer/cache/files
 
 php:
-    - 7.1
+    5.5
 
 env:
     - SUITE="curl" PACKAGE="php-http/curl-client:dev-master zendframework/zend-diactoros"

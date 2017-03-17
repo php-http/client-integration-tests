@@ -5,8 +5,9 @@ namespace Http\Client\Tests;
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
 use Http\Message\MessageFactory\GuzzleMessageFactory;
+use PHPUnit\Framework\TestCase;
 
-abstract class HttpFeatureTest extends \PHPUnit_Framework_TestCase
+abstract class HttpFeatureTest extends TestCase
 {
     /**
      * @var MessageFactory

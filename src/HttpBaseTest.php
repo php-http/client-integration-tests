@@ -5,9 +5,10 @@ namespace Http\Client\Tests;
 use Http\Message\MessageFactory;
 use Http\Message\MessageFactory\GuzzleMessageFactory;
 use Nerd\CartesianProduct\CartesianProduct;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class HttpBaseTest extends \PHPUnit_Framework_TestCase
+abstract class HttpBaseTest extends TestCase
 {
     /**
      * @var string

@@ -1,6 +1,13 @@
 # Change Log
 
 
+## UNRELEASED
+
+### Changed
+
+- Make the test suite PHPUnit 6 compatible
+
+
 ## 0.5.1 - 2016-07-18
 
 ### Fixed

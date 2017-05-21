@@ -90,10 +90,7 @@ abstract class HttpClientTest extends HttpBaseTest
         $outcome = $uriAndOutcome[1];
         $outcome['protocolVersion'] = $protocolVersion;
 
-        $this->assertResponse(
-            $response,
-            $outcome
-        );
+        $this->assertResponse($response, $outcome);
         $this->assertRequest($method, $headers, $body, $protocolVersion);
     }
 

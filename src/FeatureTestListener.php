@@ -3,7 +3,6 @@
 namespace Http\Client\Tests;
 
 use PHPUnit\Framework\Test;
-use PHPUnit\TextUI\ResultPrinter;
 
 class FeatureTestListener extends ResultPrinter
 {

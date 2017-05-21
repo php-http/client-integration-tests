@@ -2,15 +2,13 @@
 
 namespace Http\Client\Tests;
 
-use PHPUnit\Framework\Test;
-
-class FeatureTestListener extends ResultPrinter
+trait FeatureTestListener
 {
     public function write($buffer)
     {
     }
 
-    public function startTest(Test $test)
+    protected function doStartTest($test)
     {
         $feature = $this->extractFeature($test);
 
@@ -23,7 +21,7 @@ class FeatureTestListener extends ResultPrinter
         echo sprintf('%-40.s : ', $feature);
     }
 
-    public function endTest(Test $test, $time)
+    protected function doEndTest($test, $time)
     {
         if (!$this->lastTestFailed) {
             echo $this->formatWithColor('fg-green', 'Supported')."\n";
@@ -34,10 +32,10 @@ class FeatureTestListener extends ResultPrinter
         $this->lastTestFailed = false;
     }
 
-    private function extractFeature(Test $test)
+    private function extractFeature($test)
     {
         $class = get_class($test);
-        $method = $test->getName();
+        $method = $test->getName(false);
         $reflection = new \ReflectionMethod($class, $method);
 
         return $this->parseDocBlock($reflection->getDocComment(), '@feature');

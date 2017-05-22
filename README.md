@@ -29,8 +29,17 @@ Start the HTTP Test server:
 $ vendor/bin/http_test_server
 ```
 
-Run tests.
+Install an adapter.
 
+``` bash
+$ composer require php-http/curl-client:dev-master zendframework/zend-diactoros
+```
+
+Run the tests.
+
+``` bash
+./vendor/bin/phpunit --testsuite curl --printer "Http\Client\Tests\ResultPrinter"
+```
 
 ## Contributing
 

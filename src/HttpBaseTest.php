@@ -271,7 +271,7 @@ abstract class HttpBaseTest extends TestCase
             $name = strtoupper(str_replace('-', '_', 'http-'.$name));
 
             if ($method === 'TRACE' && $name === 'HTTP_CONTENT_LENGTH' && !isset($request['SERVER'][$name])) {
-                $request['SERVER'][$name] = '0';
+                continue;
             }
 
             $this->assertArrayHasKey($name, $request['SERVER']);

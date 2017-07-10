@@ -18,10 +18,8 @@ env:
     - SUITE="Buzz" PACKAGE="php-http/buzz-adapter:dev-master"
     - SUITE="CakePHP" PACKAGE="php-http/buzz-adapter:dev-master"
     - SUITE="Zend" PACKAGE="php-http/buzz-adapter:dev-master"
-
-matrix:
-    allow_failures:
-        - env: SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
+    - SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
+    - SUITE="Artax" PACKAGE="php-http/artax-adapter:dev-master"
 
 branches:
     except:

@@ -10,6 +10,7 @@ php:
     5.5
 
 env:
+    - SUITE="Artax" PACKAGE="php-http/artax-adapter:dev-master"
     - SUITE="curl" PACKAGE="php-http/curl-client:dev-master zendframework/zend-diactoros"
     - SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
     - SUITE="Guzzle5" PACKAGE="php-http/guzzle5-adapter:dev-master"
@@ -18,8 +19,10 @@ env:
     - SUITE="Buzz" PACKAGE="php-http/buzz-adapter:dev-master"
     - SUITE="CakePHP" PACKAGE="php-http/buzz-adapter:dev-master"
     - SUITE="Zend" PACKAGE="php-http/buzz-adapter:dev-master"
-    - SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
-    - SUITE="Artax" PACKAGE="php-http/artax-adapter:dev-master"
+
+matrix:
+    allow_failures:
+        - env: SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
 
 branches:
     except:

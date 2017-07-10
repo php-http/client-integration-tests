@@ -59,7 +59,7 @@ trait FeatureTestListener
         $matches = $matches[1];
 
         foreach ($matches as $ix => $match) {
-            $matches[ $ix ] = trim($match);
+            $matches[$ix] = trim($match);
         }
 
         return $matches;

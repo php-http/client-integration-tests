@@ -7,9 +7,10 @@ cache:
         - $HOME/.composer/cache/files
 
 php:
-    5.5
+    7.0
 
 env:
+    - SUITE="Artax" PACKAGE="php-http/artax-adapter:dev-master"
     - SUITE="curl" PACKAGE="php-http/curl-client:dev-master zendframework/zend-diactoros"
     - SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
     - SUITE="Guzzle5" PACKAGE="php-http/guzzle5-adapter:dev-master"

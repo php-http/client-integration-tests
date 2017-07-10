@@ -73,7 +73,16 @@ abstract class HttpBaseTest extends TestCase
 
         $cartesianProduct = new CartesianProduct($sets);
 
-        return $cartesianProduct->compute();
+        $cases = $cartesianProduct->compute();
+
+        // Filter all TRACE requests with a body, as they're not HTTP spec compliant
+        return array_filter($cases, function ($case) {
+            if ($case[0] === 'TRACE' && $case[3] !== null) {
+                return false;
+            }
+
+            return true;
+        });
     }
 
     /**
@@ -262,7 +271,7 @@ abstract class HttpBaseTest extends TestCase
             $name = strtoupper(str_replace('-', '_', 'http-'.$name));
 
             $this->assertArrayHasKey($name, $request['SERVER']);
-            $this->assertSame($value, $request['SERVER'][$name]);
+            $this->assertSame($value, $request['SERVER'][$name], "Failed asserting value for {$name}.");
         }
     }
 

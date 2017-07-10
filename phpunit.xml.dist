@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true" bootstrap="vendor/autoload.php">
     <testsuites>
+        <testsuite name="Artax">
+            <directory>vendor/php-http/artax-adapter/tests</directory>
+        </testsuite>
         <testsuite name="curl">
             <directory>vendor/php-http/curl-client/tests</directory>
         </testsuite>

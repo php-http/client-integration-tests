@@ -29,6 +29,6 @@ class PHPUnitUtility
      */
     public static function getFile($tmp = true, $name = null)
     {
-        return ($tmp ? realpath(sys_get_temp_dir()) : '').'/'.($name === null ? uniqid() : $name);
+        return ($tmp ? realpath(sys_get_temp_dir()) : '').'/'.(null === $name ? uniqid() : $name);
     }
 }

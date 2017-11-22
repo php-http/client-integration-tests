@@ -95,7 +95,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
      */
     public function testAsyncSendRequest($method, $uri, array $headers, $body)
     {
-        if ($body != null) {
+        if (null != $body) {
             $headers['Content-Length'] = (string) strlen($body);
         }
 
@@ -120,7 +120,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $this->assertResponse(
             $response,
             [
-                'body' => $method === 'HEAD' ? null : 'Ok',
+                'body' => 'HEAD' === $method ? null : 'Ok',
             ]
         );
         $this->assertRequest($method, $headers, $body, '1.1');
@@ -164,11 +164,11 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
      */
     public function testSendAsyncRequestWithOutcome($uriAndOutcome, $protocolVersion, array $headers, $body)
     {
-        if ($protocolVersion === '1.0') {
+        if ('1.0' === $protocolVersion) {
             $body = null;
         }
 
-        if ($body != null) {
+        if (null != $body) {
             $headers['Content-Length'] = (string) strlen($body);
         }
 

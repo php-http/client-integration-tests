@@ -77,7 +77,7 @@ abstract class HttpBaseTest extends TestCase
 
         // Filter all TRACE requests with a body, as they're not HTTP spec compliant
         return array_filter($cases, function ($case) {
-            if ($case[0] === 'TRACE' && $case[3] !== null) {
+            if ('TRACE' === $case[0] && null !== $case[3]) {
                 return false;
             }
 
@@ -232,7 +232,7 @@ abstract class HttpBaseTest extends TestCase
             $this->assertStringStartsWith($value, $response->getHeaderLine($name));
         }
 
-        if ($options['body'] === null) {
+        if (null === $options['body']) {
             $this->assertEmpty($response->getBody()->getContents());
         } else {
             $this->assertContains($options['body'], $response->getBody()->getContents());
@@ -270,7 +270,7 @@ abstract class HttpBaseTest extends TestCase
 
             $name = strtoupper(str_replace('-', '_', 'http-'.$name));
 
-            if ($method === 'TRACE' && $name === 'HTTP_CONTENT_LENGTH' && !isset($request['SERVER'][$name])) {
+            if ('TRACE' === $method && 'HTTP_CONTENT_LENGTH' === $name && !isset($request['SERVER'][$name])) {
                 continue;
             }
 

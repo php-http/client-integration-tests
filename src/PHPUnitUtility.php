@@ -16,7 +16,11 @@ class PHPUnitUtility
      */
     public static function getUri()
     {
-        return isset($_SERVER['TEST_SERVER']) ? $_SERVER['TEST_SERVER'] : false;
+        if (isset($_SERVER['TEST_SERVER'])) {
+            return $_SERVER['TEST_SERVER'];
+        }
+
+        return getenv('TEST_SERVER');
     }
 
     /**

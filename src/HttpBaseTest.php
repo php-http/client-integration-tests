@@ -254,7 +254,8 @@ abstract class HttpBaseTest extends TestCase
     ) {
         $request = $this->getRequest();
 
-        $this->assertSame($protocolVersion, substr($request['SERVER']['SERVER_PROTOCOL'], 5));
+        $actualProtocolVersion = substr($request['SERVER']['SERVER_PROTOCOL'], 5);
+        $this->assertTrue(substr($protocolVersion, 0, 1) === substr($actualProtocolVersion, 0, 1) &&1 !== version_compare($protocolVersion, $actualProtocolVersion));
         $this->assertSame($method, $request['SERVER']['REQUEST_METHOD']);
 
         $defaultHeaders = [

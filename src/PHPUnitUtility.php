@@ -20,7 +20,7 @@ class PHPUnitUtility
             return $_SERVER['TEST_SERVER'];
         }
 
-        return getenv('TEST_SERVER');
+        return getenv('TEST_SERVER', true);
     }
 
     /**

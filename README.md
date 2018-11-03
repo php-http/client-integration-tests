@@ -11,35 +11,36 @@
 
 Via Composer
 
-``` bash
+```bash
 $ composer require php-http/client-integration-tests
 ```
 
 
 ## Usage
 
-This package should not be used on its own. It provides integration tests for HTTP Adapters.
+This package should not be used on its own. It provides integration tests for HTTP Clients.
 
 
 ### Running tests for HTTP Adapters
 
 Start the HTTP Test server:
 
-``` bash
+```bash
 $ vendor/bin/http_test_server
 ```
 
 Install an adapter.
 
-``` bash
+```bash
 $ composer require php-http/curl-client:dev-master zendframework/zend-diactoros
 ```
 
 Run the tests.
 
-``` bash
+```bash
 ./vendor/bin/phpunit --testsuite curl --printer "Http\Client\Tests\ResultPrinter"
 ```
+
 
 ## Contributing
 

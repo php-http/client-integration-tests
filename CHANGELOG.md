@@ -1,23 +1,40 @@
 # Change Log
 
 
-## UNRELEASED
+All notable changes to this project will be documented in this file.
 
-- Don't test `TRACE` requests with request bodies, as they're not valid requests according to the [RFC](https://tools.ietf.org/html/rfc7231#section-4.3.8).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## Unreleased
+
+
+## [1.0.0] - 2018-11-03
 
 ### Changed
 
+- Don't test `TRACE` requests with request bodies, as they're not valid requests according to the [RFC](https://tools.ietf.org/html/rfc7231#section-4.3.8).
 - Make the test suite PHPUnit 6 compatible
 
 
-## 0.5.1 - 2016-07-18
+## [0.6.2] - 2017-07-10
+
+
+## [0.6.1] - 2017-07-10
+
+
+## [0.6.0] - 2017-05-29
+
+
+## [0.5.1] - 2016-07-18
 
 ### Fixed
 
 - Old name
 
 
-## 0.5.0 - 2016-07-18
+## [0.5.0] - 2016-07-18
 
 ### Changed
 
@@ -25,28 +42,28 @@
 - Improved pacakge
 
 
-## 0.4.0 - 2016-03-02
+## [0.4.0] - 2016-03-02
 
 ### Removed
 
 - Discovery dependency
 
 
-## 0.3.1 - 2016-02-11
+## [0.3.1] - 2016-02-11
 
 ### Changed
 
 - Updated message dependency
 
 
-## 0.3.0 - 2016-01-21
+## [0.3.0] - 2016-01-21
 
 ### Changed
 
 - Updated discovery dependency
 
 
-## 0.2.0 - 2016-01-13
+## [0.2.0] - 2016-01-13
 
 ### Changed
 
@@ -59,3 +76,16 @@
 ### Added
 
 - Initial release
+
+
+[Unreleased]: https://github.com/php-http/client-integration-tests/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/php-http/client-integration-tests/compare/v0.6.2...v1.0.0
+[0.6.2]: https://github.com/php-http/client-integration-tests/compare/v0.6.1...v0.6.2
+[0.6.1]: https://github.com/php-http/client-integration-tests/compare/v0.6.0...v0.6.1
+[0.6.0]: https://github.com/php-http/client-integration-tests/compare/v0.5.1...v0.6.0
+[0.5.1]: https://github.com/php-http/client-integration-tests/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/php-http/client-integration-tests/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/php-http/client-integration-tests/compare/v0.3.1...v0.4.0
+[0.3.1]: https://github.com/php-http/client-integration-tests/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/php-http/client-integration-tests/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/php-http/client-integration-tests/compare/v0.1.0...v0.2.0

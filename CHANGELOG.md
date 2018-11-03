@@ -1,12 +1,11 @@
 # Change Log
 
 
-## UNRELEASED
-
-- Don't test `TRACE` requests with request bodies, as they're not valid requests according to the [RFC](https://tools.ietf.org/html/rfc7231#section-4.3.8).
+## 1.0.0 - 2018-11-03
 
 ### Changed
 
+- Don't test `TRACE` requests with request bodies, as they're not valid requests according to the [RFC](https://tools.ietf.org/html/rfc7231#section-4.3.8).
 - Make the test suite PHPUnit 6 compatible
 
 

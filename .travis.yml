@@ -31,7 +31,7 @@ branches:
         - /^analysis-.*$/
 
 before_install:
-    - phpenv config-rm xdebug.ini
+    - phpenv config-rm xdebug.ini || true
 
 install:
     - composer require ${PACKAGE} --no-update

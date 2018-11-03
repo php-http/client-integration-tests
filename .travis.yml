@@ -25,6 +25,7 @@ matrix:
           env: SUITE="Guzzle5" PACKAGE="php-http/guzzle5-adapter:dev-master"
     allow_failures:
         - env: SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
+        - env: SUITE="CakePHP" PACKAGE="php-http/cakephp-adapter:dev-master"
 
 branches:
     except:

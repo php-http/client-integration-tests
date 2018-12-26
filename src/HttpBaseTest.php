@@ -234,9 +234,9 @@ abstract class HttpBaseTest extends TestCase
         }
 
         if (null === $options['body']) {
-            $this->assertEmpty($response->getBody()->getContents());
+            $this->assertEmpty($response->getBody()->__toString());
         } else {
-            $this->assertContains($options['body'], $response->getBody()->getContents());
+            $this->assertContains($options['body'], $response->getBody()->__toString());
         }
     }
 

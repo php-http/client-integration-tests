@@ -61,7 +61,7 @@ abstract class HttpFeatureTest extends TestCase
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
 
-        $contents = json_decode($response->getBody()->getContents());
+        $contents = json_decode($response->getBody()->__toString());
 
         $this->assertEquals($testData, $contents->data);
     }
@@ -132,7 +132,7 @@ abstract class HttpFeatureTest extends TestCase
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
 
-        $contents = json_decode($response->getBody()->getContents());
+        $contents = json_decode($response->getBody()->__toString());
 
         $this->assertEquals($testData, $contents->data);
     }
@@ -151,7 +151,7 @@ abstract class HttpFeatureTest extends TestCase
 
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertContains('€', $response->getBody()->getContents());
+        $this->assertContains('€', $response->getBody()->__toString());
     }
 
     /**
@@ -168,7 +168,7 @@ abstract class HttpFeatureTest extends TestCase
 
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertContains('gzip', $response->getBody()->getContents());
+        $this->assertContains('gzip', $response->getBody()->__toString());
     }
 
     /**
@@ -185,7 +185,7 @@ abstract class HttpFeatureTest extends TestCase
 
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertContains('deflate', $response->getBody()->getContents());
+        $this->assertContains('deflate', $response->getBody()->__toString());
     }
 
     /**
@@ -219,7 +219,7 @@ abstract class HttpFeatureTest extends TestCase
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
 
-        $content = @json_decode($response->getBody()->getContents());
+        $content = @json_decode($response->getBody()->__toString());
 
         $this->assertNotNull($content);
     }

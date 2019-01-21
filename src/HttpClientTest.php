@@ -95,7 +95,7 @@ abstract class HttpClientTest extends HttpBaseTest
     }
 
     /**
-     * @expectedException \Http\Client\Exception
+     * @expectedException \Psr\Http\Client\NetworkExceptionInterface
      * @group             integration
      */
     public function testSendWithInvalidUri()

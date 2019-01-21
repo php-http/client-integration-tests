@@ -3,36 +3,19 @@
 namespace Http\Client\Tests;
 
 use PHPUnit\Framework\Test;
+use PHPUnit\TextUI\ResultPrinter as BaseResultPrinter;
 
-// If PHPUnit 6
-if (class_exists('\\PHPUnit\\TextUI\\ResultPrinter')) {
-    class ResultPrinter extends \PHPUnit\TextUI\ResultPrinter
+class ResultPrinter extends BaseResultPrinter
+{
+    use FeatureTestListener;
+
+    public function startTest(Test $test): void
     {
-        use FeatureTestListener;
-
-        public function startTest(Test $test)
-        {
-            return $this->doStartTest($test);
-        }
-
-        public function endTest(Test $test, $time)
-        {
-            return $this->doEndTest($test, $time);
-        }
+        return $this->doStartTest($test);
     }
-} else {
-    class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter
+
+    public function endTest(Test $test, float $time): void
     {
-        use FeatureTestListener;
-
-        public function startTest(\PHPUnit_Framework_Test $test)
-        {
-            return $this->doStartTest($test);
-        }
-
-        public function endTest(\PHPUnit_Framework_Test $test, $time)
-        {
-            return $this->doEndTest($test, $time);
-        }
+        return $this->doEndTest($test, $time);
     }
 }

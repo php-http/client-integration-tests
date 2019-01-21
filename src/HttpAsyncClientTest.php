@@ -27,10 +27,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         unset($this->httpAdapter);
     }
 
-    /**
-     * @return HttpAsyncClient
-     */
-    abstract protected function createHttpAsyncClient();
+    abstract protected function createHttpAsyncClient(): HttpAsyncClient;
 
     public function testSuccessiveCallMustUseResponseInterface()
     {

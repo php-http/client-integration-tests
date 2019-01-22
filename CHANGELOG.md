@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0] - Unreleased
 
-- Only support httplug 2.0 and psr18
-- Httplug 2.0 is now optional (only require it if you need to test async)
-- HttpClientTest now rely only on PSR18 (no need for httplug)
+- Only support HTTPlug 2.0 and PSR-18
+- HTTPlug 2.0 is now optional (only require it if you need to test async)
+- HttpClientTest now relies only on PSR-18 (no need for HTTPlug)
 
 ## [2.0.1] - 2018-12-27
 

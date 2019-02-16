@@ -59,10 +59,7 @@ abstract class HttpBaseTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function requestProvider()
+    public function requestProvider(): array
     {
         $sets = [
             'methods' => $this->getMethods(),
@@ -85,10 +82,7 @@ abstract class HttpBaseTest extends TestCase
         });
     }
 
-    /**
-     * @return array
-     */
-    public function requestWithOutcomeProvider()
+    public function requestWithOutcomeProvider(): array
     {
         $sets = [
             'urisAndOutcomes' => $this->getUrisAndOutcomes(),
@@ -102,10 +96,7 @@ abstract class HttpBaseTest extends TestCase
         return $cartesianProduct->compute();
     }
 
-    /**
-     * @return array
-     */
-    private function getMethods()
+    private function getMethods(): array
     {
         return [
             'GET',
@@ -211,14 +202,8 @@ abstract class HttpBaseTest extends TestCase
         return ['param1' => 'foo', 'param2' => ['bar', ['baz']]];
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @param array             $options
-     */
-    protected function assertResponse($response, array $options = [])
+    protected function assertResponse(ResponseInterface $response, array $options = [])
     {
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
-
         $options = array_merge($this->defaultOptions, $options);
 
         // The response version may be greater or equal to the request version. See https://tools.ietf.org/html/rfc2145#section-2.3

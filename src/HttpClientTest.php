@@ -2,7 +2,7 @@
 
 namespace Http\Client\Tests;
 
-use Http\Client\HttpClient;
+use Psr\Http\Client\ClientInterface;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
@@ -10,7 +10,7 @@ use Http\Client\HttpClient;
 abstract class HttpClientTest extends HttpBaseTest
 {
     /**
-     * @var HttpClient
+     * @var ClientInterface
      */
     protected $httpAdapter;
 
@@ -30,10 +30,7 @@ abstract class HttpClientTest extends HttpBaseTest
         unset($this->httpAdapter);
     }
 
-    /**
-     * @return HttpClient
-     */
-    abstract protected function createHttpAdapter();
+    abstract protected function createHttpAdapter(): ClientInterface;
 
     /**
      * @dataProvider requestProvider

@@ -2,7 +2,7 @@
 
 namespace Http\Client\Tests;
 
-use Http\Client\HttpClient;
+use Psr\Http\Client\ClientInterface;
 use Http\Message\MessageFactory;
 use Http\Message\MessageFactory\GuzzleMessageFactory;
 use PHPUnit\Framework\TestCase;
@@ -22,10 +22,7 @@ abstract class HttpFeatureTest extends TestCase
         self::$messageFactory = new GuzzleMessageFactory();
     }
 
-    /**
-     * @return HttpClient
-     */
-    abstract protected function createClient();
+    abstract protected function createClient(): ClientInterface;
 
     /**
      * @feature Send a GET Request
@@ -39,7 +36,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
     }
 
@@ -58,7 +54,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
 
         $contents = json_decode($response->getBody()->__toString());
@@ -78,7 +73,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
     }
 
@@ -94,7 +88,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
     }
 
@@ -110,7 +103,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
     }
 
@@ -129,7 +121,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
 
         $contents = json_decode($response->getBody()->__toString());
@@ -149,7 +140,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
         $this->assertContains('€', $response->getBody()->__toString());
     }
@@ -166,7 +156,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
         $this->assertContains('gzip', $response->getBody()->__toString());
     }
@@ -183,7 +172,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
         $this->assertContains('deflate', $response->getBody()->__toString());
     }
@@ -200,7 +188,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
     }
 
@@ -216,7 +203,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
 
         $content = @json_decode($response->getBody()->__toString());
@@ -236,7 +222,6 @@ abstract class HttpFeatureTest extends TestCase
 
         $response = $this->createClient()->sendRequest($request);
 
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $response);
         $this->assertSame(200, $response->getStatusCode());
     }
 }

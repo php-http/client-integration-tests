@@ -15,12 +15,17 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "phpunit/phpunit": "^4.8.35 || ^5.4.3 || ^6.0 || ^7.0",
-        "php-http/httplug": "^1.0 || ^2.0",
+        "php": "^7.1",
+        "phpunit/phpunit": "^7.0",
         "php-http/message": "^1.0",
         "guzzlehttp/psr7": "^1.0",
         "th3n3rd/cartesian-product": "^0.3"
+    },
+    "suggest": {
+        "php-http/httplug": "To test async client"
+    },
+    "require-dev": {
+        "php-http/httplug": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -44,7 +49,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "2.x-dev"
+            "dev-master": "3.x-dev"
         }
     }
 }

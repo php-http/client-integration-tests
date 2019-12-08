@@ -43,7 +43,7 @@ abstract class HttpBaseTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$logPath = PHPUnitUtility::getFile(true, 'php-http-adapter.log');
         self::$messageFactory = new GuzzleMessageFactory();
@@ -52,7 +52,7 @@ abstract class HttpBaseTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (file_exists(self::$logPath)) {
             unlink(self::$logPath);

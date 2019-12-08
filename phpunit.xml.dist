@@ -10,6 +10,9 @@
         <testsuite name="Socket">
             <directory>vendor/php-http/socket-client/tests</directory>
         </testsuite>
+        <testsuite name="Guzzle">
+            <file>vendor/guzzlehttp/guzzle/tests/HttplugIntegrationTest.php</file>
+        </testsuite>
         <testsuite name="Guzzle5">
             <directory>vendor/php-http/guzzle5-adapter/tests</directory>
         </testsuite>

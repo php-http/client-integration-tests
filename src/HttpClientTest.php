@@ -92,8 +92,7 @@ abstract class HttpClientTest extends HttpBaseTest
     }
 
     /**
-     * @expectedException \Psr\Http\Client\NetworkExceptionInterface
-     * @group             integration
+     * @group integration
      */
     public function testSendWithInvalidUri()
     {
@@ -103,6 +102,7 @@ abstract class HttpClientTest extends HttpBaseTest
             $this->defaultHeaders
         );
 
+        $this->expectException(\Psr\Http\Client\NetworkExceptionInterface::class);
         $this->httpAdapter->sendRequest($request);
     }
 }

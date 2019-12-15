@@ -221,7 +221,12 @@ abstract class HttpBaseTest extends TestCase
         if (null === $options['body']) {
             $this->assertEmpty($response->getBody()->__toString());
         } else {
-            $this->assertContains($options['body'], $response->getBody()->__toString());
+            // For supporting both phpunit 7 and 8 without display any deprecation.
+            if (method_exists($this, 'assertStringContainsString')) {
+                $this->assertStringContainsString($options['body'], $response->getBody()->__toString());
+            } else {
+                $this->assertContains($options['body'], $response->getBody()->__toString());
+            }
         }
     }
 

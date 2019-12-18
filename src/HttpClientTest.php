@@ -3,6 +3,7 @@
 namespace Http\Client\Tests;
 
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\NetworkExceptionInterface;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
@@ -102,7 +103,7 @@ abstract class HttpClientTest extends HttpBaseTest
             $this->defaultHeaders
         );
 
-        $this->expectException(\Psr\Http\Client\NetworkExceptionInterface::class);
+        $this->expectException(NetworkExceptionInterface::class);
         $this->httpAdapter->sendRequest($request);
     }
 }

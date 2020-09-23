@@ -8,7 +8,10 @@ if [ -f "$DIR/../autoload.php" ]; then
 # Development
 elif [ -f "$DIR/../vendor/autoload.php" ]; then
     php -S 127.0.0.1:10000 -t "$DIR/../fixture"
-# Not working, e.g. windows which does not do symlinks
+# Installed as a dependency, but not accessed using the symlink (e.g. Windows)
+elif [ -f "$DIR/../composer.json" -a -f "$DIR/../fixture/server.php" ] && grep -q php-http/client-integration-tests "$DIR/../composer.json"; then
+    php -S 127.0.0.1:10000 -t "$DIR/../fixture"
+# Not working
 else
     echo "*** Can't find the fixture folder ***" >&2
     echo "Please write your own way to start a PHP web server on port 10000 for the 'fixture' directory." >&2

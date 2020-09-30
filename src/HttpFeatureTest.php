@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 abstract class HttpFeatureTest extends TestCase
 {
+    use PhpUnitBackwardCompatibleTrait;
+
     /**
      * @var MessageFactory
      */
@@ -17,7 +19,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$messageFactory = new GuzzleMessageFactory();
     }
@@ -141,7 +143,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertContains('€', $response->getBody()->__toString());
+        $this->assertStringContainsString('€', $response->getBody()->__toString());
     }
 
     /**
@@ -157,7 +159,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertContains('gzip', $response->getBody()->__toString());
+        $this->assertStringContainsString('gzip', $response->getBody()->__toString());
     }
 
     /**
@@ -173,7 +175,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertContains('deflate', $response->getBody()->__toString());
+        $this->assertStringContainsString('deflate', $response->getBody()->__toString());
     }
 
     /**

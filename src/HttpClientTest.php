@@ -3,6 +3,7 @@
 namespace Http\Client\Tests;
 
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\NetworkExceptionInterface;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
@@ -17,7 +18,7 @@ abstract class HttpClientTest extends HttpBaseTest
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->httpAdapter = $this->createHttpAdapter();
     }
@@ -25,7 +26,7 @@ abstract class HttpClientTest extends HttpBaseTest
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->httpAdapter);
     }
@@ -92,8 +93,7 @@ abstract class HttpClientTest extends HttpBaseTest
     }
 
     /**
-     * @expectedException \Psr\Http\Client\NetworkExceptionInterface
-     * @group             integration
+     * @group integration
      */
     public function testSendWithInvalidUri()
     {
@@ -103,6 +103,7 @@ abstract class HttpClientTest extends HttpBaseTest
             $this->defaultHeaders
         );
 
+        $this->expectException(NetworkExceptionInterface::class);
         $this->httpAdapter->sendRequest($request);
     }
 }

@@ -10,6 +10,8 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class HttpBaseTest extends TestCase
 {
+    use PhpUnitBackwardCompatibleTrait;
+
     /**
      * @var string
      */
@@ -43,7 +45,7 @@ abstract class HttpBaseTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$logPath = PHPUnitUtility::getFile(true, 'php-http-adapter.log');
         self::$messageFactory = new GuzzleMessageFactory();
@@ -52,7 +54,7 @@ abstract class HttpBaseTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (file_exists(self::$logPath)) {
             unlink(self::$logPath);
@@ -221,7 +223,7 @@ abstract class HttpBaseTest extends TestCase
         if (null === $options['body']) {
             $this->assertEmpty($response->getBody()->__toString());
         } else {
-            $this->assertContains($options['body'], $response->getBody()->__toString());
+            $this->assertStringContainsString($options['body'], $response->getBody()->__toString());
         }
     }
 

@@ -14,7 +14,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->httpAsyncClient = $this->createHttpAsyncClient();
     }
@@ -22,7 +22,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->httpAdapter);
     }

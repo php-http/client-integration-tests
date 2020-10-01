@@ -7,17 +7,15 @@ on:
   pull_request:
 
 jobs:
-  phpstan:
-    name: PHPStan
+  php-cs-fixer:
+    name: PHP-CS-Fixer
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: PHPStan
-        uses: docker://oskarstark/phpstan-ga:0.12.41
-        env:
-          REQUIRE_DEV: true
+      - name: PHP-CS-Fixer
+        uses: docker://oskarstark/php-cs-fixer-ga:2.16.4
         with:
-          args: analyze --no-progress
+          args: --dry-run --diff-format udiff

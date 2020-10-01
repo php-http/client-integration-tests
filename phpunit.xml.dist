@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true" bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="Artax">
-            <directory>vendor/php-http/artax-adapter/tests</directory>
-        </testsuite>
         <testsuite name="curl">
             <directory>vendor/php-http/curl-client/tests</directory>
         </testsuite>
@@ -20,16 +17,7 @@
             <directory>vendor/php-http/guzzle6-adapter/tests</directory>
         </testsuite>
         <testsuite name="Buzz">
-            <directory>vendor/php-http/buzz-adapter/tests</directory>
-        </testsuite>
-        <testsuite name="React">
-            <directory>vendor/php-http/react-adapter/tests</directory>
-        </testsuite>
-        <testsuite name="CakePHP">
-            <directory>vendor/php-http/cakephp-adapter/tests</directory>
-        </testsuite>
-        <testsuite name="Zend">
-            <directory>vendor/php-http/zend-adapter/tests</directory>
+            <directory>vendor/kriswallsmith/buzz/tests</directory>
         </testsuite>
     </testsuites>
     <php>

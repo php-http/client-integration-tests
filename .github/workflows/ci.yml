@@ -21,6 +21,7 @@ jobs:
           - { suite: "Guzzle6", php: '7.4', package: "php-http/guzzle6-adapter:dev-master" }
           - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle:dev-master" }
           - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle:dev-master phpunit/phpunit:^8.5.8" }
+          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle:dev-master phpunit/phpunit:^7.5.20" }
           - { suite: "Buzz",    php: '7.4', package: "kriswallsmith/buzz:dev-master" }
 
     steps:

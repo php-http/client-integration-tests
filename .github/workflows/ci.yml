@@ -36,7 +36,7 @@ jobs:
 
       - name: Download dependencies
         run: |
-          composer require ${{ matrix.batch.php: '7.4', package }} --no-update
+          composer require ${{ matrix.batch.package }} --no-update
           composer update --prefer-source --no-interaction
 
       - name: Start test server

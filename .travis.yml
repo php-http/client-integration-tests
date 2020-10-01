@@ -7,13 +7,14 @@ cache:
         - $HOME/.composer/cache/files
 
 php:
-    - 7.3
+    - 7.4
 
 env:
     - SUITE="curl" PACKAGE="php-http/curl-client:dev-master zendframework/zend-diactoros"
     - SUITE="Socket" PACKAGE="php-http/socket-client:dev-master php-http/client-common"
     - SUITE="Guzzle6" PACKAGE="php-http/guzzle6-adapter:dev-master"
     - SUITE="Guzzle" PACKAGE="guzzlehttp/guzzle:dev-master"
+    - SUITE="Guzzle" PACKAGE="guzzlehttp/guzzle:dev-master phpunit/phpunit:^8.5.8"
     - SUITE="React" PACKAGE="php-http/react-adapter:dev-master"
     - SUITE="Buzz" PACKAGE="php-http/buzz-adapter:dev-master"
     - SUITE="CakePHP" PACKAGE="php-http/cakephp-adapter:dev-master"

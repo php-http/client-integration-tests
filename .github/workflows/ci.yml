@@ -10,22 +10,24 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
       max-parallel: 10
       matrix:
         batch:
-          - { SUITE: "curl", PACKAGE: "php-http/curl-client:dev-master zendframework/zend-diactoros" }
-          - { SUITE: "Socket", PACKAGE: "php-http/socket-client:dev-master php-http/client-common" }
-          - { SUITE: "Guzzle6", PACKAGE: "php-http/guzzle6-adapter:dev-master" }
-          - { SUITE: "Guzzle", PACKAGE: "guzzlehttp/guzzle:dev-master" }
-          - { SUITE: "Guzzle", PACKAGE: "guzzlehttp/guzzle:dev-master phpunit/phpunit:^8.5.8" }
-          - { SUITE: "Buzz", PACKAGE: "kriswallsmith/buzz:dev-master" }
+          - { suite: "curl", php: '7.4', package: "php-http/curl-client:dev-master zendframework/zend-diactoros" }
+          - { suite: "Socket", php: '7.4', package: "php-http/socket-client:dev-master php-http/client-common" }
+          - { suite: "Guzzle5", php: '5.5', package: "php-http/guzzle5-adapter:dev-master" }
+          - { suite: "Guzzle6", php: '7.4', package: "php-http/guzzle6-adapter:dev-master" }
+          - { suite: "Guzzle", php: '7.4', package: "guzzlehttp/guzzle:dev-master" }
+          - { suite: "Guzzle", php: '7.4', package: "guzzlehttp/guzzle:dev-master phpunit/phpunit:^8.5.8" }
+          - { suite: "Buzz", php: '7.4', package: "kriswallsmith/buzz:dev-master" }
 
     steps:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.batch.php }}
           coverage: none
           tools: composer:v2
 
@@ -34,7 +36,7 @@ jobs:
 
       - name: Download dependencies
         run: |
-          composer require ${{ matrix.batch.PACKAGE }} --no-update
+          composer require ${{ matrix.batch.php: '7.4', package }} --no-update
           composer update --prefer-source --no-interaction
 
       - name: Start test server
@@ -42,4 +44,4 @@ jobs:
         run: bin/http_test_server > /dev/null 2>&1 &
 
       - name: Run tests
-        run: ./vendor/bin/phpunit --testsuite ${{ matrix.batch.SUITE }}
+        run: ./vendor/bin/phpunit --testsuite ${{ matrix.batch.suite }}

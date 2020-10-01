@@ -15,13 +15,13 @@ jobs:
       max-parallel: 10
       matrix:
         batch:
-          - { suite: "curl", php: '7.4', package: "php-http/curl-client:dev-master zendframework/zend-diactoros" }
-          - { suite: "Socket", php: '7.4', package: "php-http/socket-client:dev-master php-http/client-common" }
-          - { suite: "Guzzle5", php: '5.5', package: "php-http/guzzle5-adapter:dev-master" }
+          - { suite: "curl",    php: '7.4', package: "php-http/curl-client:dev-master zendframework/zend-diactoros" }
+          - { suite: "Socket",  php: '7.4', package: "php-http/socket-client:dev-master php-http/client-common" }
+          - { suite: "Guzzle5", php: '7.1', package: "php-http/guzzle5-adapter:dev-master" }
           - { suite: "Guzzle6", php: '7.4', package: "php-http/guzzle6-adapter:dev-master" }
-          - { suite: "Guzzle", php: '7.4', package: "guzzlehttp/guzzle:dev-master" }
-          - { suite: "Guzzle", php: '7.4', package: "guzzlehttp/guzzle:dev-master phpunit/phpunit:^8.5.8" }
-          - { suite: "Buzz", php: '7.4', package: "kriswallsmith/buzz:dev-master" }
+          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle:dev-master" }
+          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle:dev-master phpunit/phpunit:^8.5.8" }
+          - { suite: "Buzz",    php: '7.4', package: "kriswallsmith/buzz:dev-master" }
 
     steps:
       - name: Set up PHP

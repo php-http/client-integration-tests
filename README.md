@@ -32,7 +32,7 @@ $ vendor/bin/http_test_server
 Install an adapter.
 
 ```bash
-$ composer require php-http/curl-client:dev-master zendframework/zend-diactoros
+$ composer require php-http/curl-client:dev-master laminas/laminas-diactoros
 ```
 
 Run the tests.

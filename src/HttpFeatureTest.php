@@ -33,7 +33,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'GET',
-            'http://httpbin.org/get'
+            'https://httpbingo.org/get'
         );
 
         $response = $this->createClient()->sendRequest($request);
@@ -49,7 +49,7 @@ abstract class HttpFeatureTest extends TestCase
         $testData = 'Test data';
         $request = self::$messageFactory->createRequest(
             'POST',
-            'http://httpbin.org/post',
+            'https://httpbingo.org/post',
             ['Content-Length' => strlen($testData)],
             $testData
         );
@@ -70,7 +70,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'PATCH',
-            'http://httpbin.org/patch'
+            'https://httpbingo.org/patch'
         );
 
         $response = $this->createClient()->sendRequest($request);
@@ -85,7 +85,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'PUT',
-            'http://httpbin.org/put'
+            'https://httpbingo.org/put'
         );
 
         $response = $this->createClient()->sendRequest($request);
@@ -100,7 +100,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'DELETE',
-            'http://httpbin.org/delete'
+            'https://httpbingo.org/delete'
         );
 
         $response = $this->createClient()->sendRequest($request);
@@ -116,7 +116,7 @@ abstract class HttpFeatureTest extends TestCase
         $testData = 'Test data';
         $request = self::$messageFactory->createRequest(
             'POST',
-            'http://httpbin.org/post',
+            'https://httpbingo.org/post',
             [],
             $testData
         );
@@ -137,7 +137,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'GET',
-            'http://httpbin.org/encoding/utf8'
+            'https://httpbingo.org/encoding/utf8'
         );
 
         $response = $this->createClient()->sendRequest($request);
@@ -153,7 +153,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'GET',
-            'http://httpbin.org/gzip'
+            'https://httpbingo.org/gzip'
         );
 
         $response = $this->createClient()->sendRequest($request);
@@ -169,7 +169,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'GET',
-            'http://httpbin.org/deflate'
+            'https://httpbingo.org/deflate'
         );
 
         $response = $this->createClient()->sendRequest($request);
@@ -185,7 +185,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'GET',
-            'http://httpbin.org/redirect/1'
+            'https://httpbingo.org/redirect/1'
         );
 
         $response = $this->createClient()->sendRequest($request);
@@ -200,7 +200,7 @@ abstract class HttpFeatureTest extends TestCase
     {
         $request = self::$messageFactory->createRequest(
             'GET',
-            'http://httpbin.org/stream/1'
+            'https://httpbingo.org/stream/1'
         );
 
         $response = $this->createClient()->sendRequest($request);

@@ -119,7 +119,7 @@ abstract class HttpBaseTest extends TestCase
     protected function getUri(array $query = [])
     {
         return !empty($query)
-            ? PHPUnitUtility::getUri().'?'.http_build_query($query, null, '&')
+            ? PHPUnitUtility::getUri().'?'.http_build_query($query, '', '&')
             : PHPUnitUtility::getUri();
     }
 
@@ -192,7 +192,7 @@ abstract class HttpBaseTest extends TestCase
     {
         return [
             null,
-            http_build_query($this->getData(), null, '&'),
+            http_build_query($this->getData(), '', '&'),
         ];
     }
 

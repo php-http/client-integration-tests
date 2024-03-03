@@ -15,14 +15,16 @@ jobs:
       max-parallel: 10
       matrix:
         batch:
-          - { suite: "curl",    php: '7.4', package: "php-http/curl-client:dev-master laminas/laminas-diactoros" }
-          - { suite: "Socket",  php: '7.4', package: "php-http/socket-client:dev-master php-http/client-common" }
-          - { suite: "Guzzle5", php: '7.1', package: "php-http/guzzle5-adapter:dev-master" }
-          - { suite: "Guzzle6", php: '7.4', package: "php-http/guzzle6-adapter:dev-master" }
-          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle:dev-master" }
-          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle:dev-master phpunit/phpunit:^8.5.8" }
-          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle:dev-master phpunit/phpunit:^7.5.20" }
-          - { suite: "Buzz",    php: '7.4', package: "kriswallsmith/buzz:dev-master" }
+          - { suite: "curl",    php: '7.4', package: "php-http/curl-client laminas/laminas-diactoros php-http/message-factory" }
+          - { suite: "Socket",  php: '7.4', package: "php-http/socket-client php-http/client-common php-http/message-factory" }
+          - { suite: "Guzzle5", php: '7.4', package: "php-http/guzzle5-adapter php-http/message-factory" }
+          - { suite: "Guzzle6", php: '7.4', package: "php-http/guzzle6-adapter php-http/message-factory" }
+          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle php-http/message-factory" }
+          - { suite: "Guzzle",  php: '8.3', package: "guzzlehttp/guzzle php-http/message-factory" }
+          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle phpunit/phpunit:^8.5.8 php-http/message-factory" }
+          - { suite: "Guzzle",  php: '7.4', package: "guzzlehttp/guzzle phpunit/phpunit:^7.5.20 php-http/message-factory" }
+          - { suite: "Buzz",    php: '7.4', package: "kriswallsmith/buzz psr/log php-http/message-factory" }
+          - { suite: "Buzz",    php: '8.3', package: "kriswallsmith/buzz psr/log php-http/message-factory" }
 
     steps:
       - name: Set up PHP

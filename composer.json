@@ -26,7 +26,8 @@
         "php-http/httplug": "To test async client"
     },
     "require-dev": {
-        "php-http/httplug": "^2.0"
+        "php-http/httplug": "^2.0",
+        "nyholm/psr7": "^1.8@dev"
     },
     "autoload": {
         "psr-4": {

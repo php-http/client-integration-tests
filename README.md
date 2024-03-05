@@ -12,7 +12,7 @@
 Via Composer
 
 ```bash
-$ composer require php-http/client-integration-tests
+composer require php-http/client-integration-tests
 ```
 
 
@@ -26,13 +26,13 @@ This package should not be used on its own. It provides integration tests for HT
 Start the HTTP Test server:
 
 ```bash
-$ vendor/bin/http_test_server
+vendor/bin/http_test_server
 ```
 
 Install an adapter.
 
 ```bash
-$ composer require php-http/curl-client:dev-master laminas/laminas-diactoros
+composer require php-http/curl-client laminas/laminas-diactoros
 ```
 
 Run the tests.

@@ -3,6 +3,8 @@
 namespace Http\Client\Tests;
 
 use Http\Client\HttpAsyncClient;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 abstract class HttpAsyncClientTest extends HttpBaseTest
 {
@@ -90,6 +92,8 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
      * @dataProvider requestProvider
      * @group        integration
      */
+    #[DataProvider('requestProvider')]
+    #[Group('integration')]
     public function testAsyncSendRequest($method, $uri, array $headers, $body)
     {
         if (null != $body) {
@@ -124,8 +128,9 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
     }
 
     /**
-     * @group             integration
+     * @group integration
      */
+    #[Group('integration')]
     public function testSendAsyncWithInvalidUri()
     {
         $request = self::$messageFactory->createRequest(
@@ -159,6 +164,8 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
      * @dataProvider requestWithOutcomeProvider
      * @group        integration
      */
+    #[Group('integration')]
+    #[DataProvider('requestWithOutcomeProvider')]
     public function testSendAsyncRequestWithOutcome($uriAndOutcome, $protocolVersion, array $headers, $body)
     {
         if ('1.0' === $protocolVersion) {

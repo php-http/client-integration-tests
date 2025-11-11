@@ -61,13 +61,13 @@ abstract class HttpBaseTest extends TestCase
         }
     }
 
-    public function requestProvider(): array
+    public static function requestProvider(): array
     {
         $sets = [
-            'methods' => $this->getMethods(),
-            'uris' => [$this->getUri()],
-            'headers' => $this->getHeaders(),
-            'body' => $this->getBodies(),
+            'methods' => self::getMethods(),
+            'uris' => [self::getUri()],
+            'headers' => self::getHeaders(),
+            'body' => self::getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -84,13 +84,13 @@ abstract class HttpBaseTest extends TestCase
         });
     }
 
-    public function requestWithOutcomeProvider(): array
+    public static function requestWithOutcomeProvider(): array
     {
         $sets = [
-            'urisAndOutcomes' => $this->getUrisAndOutcomes(),
-            'protocolVersions' => $this->getProtocolVersions(),
-            'headers' => $this->getHeaders(),
-            'body' => $this->getBodies(),
+            'urisAndOutcomes' => self::getUrisAndOutcomes(),
+            'protocolVersions' => self::getProtocolVersions(),
+            'headers' => self::getHeaders(),
+            'body' => self::getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);

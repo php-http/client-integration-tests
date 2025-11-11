@@ -2,6 +2,8 @@
 
 namespace Http\Client\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
 
@@ -37,6 +39,8 @@ abstract class HttpClientTest extends HttpBaseTest
      * @dataProvider requestProvider
      * @group        integration
      */
+    #[Group('integration')]
+    #[DataProvider('requestProvider')]
     public function testSendRequest($method, $uri, array $headers, $body)
     {
         if (null != $body) {
@@ -65,6 +69,8 @@ abstract class HttpClientTest extends HttpBaseTest
      * @dataProvider requestWithOutcomeProvider
      * @group        integration
      */
+    #[Group('integration')]
+    #[DataProvider('requestWithOutcomeProvider')]
     public function testSendRequestWithOutcome($uriAndOutcome, $protocolVersion, array $headers, $body)
     {
         if ('1.0' === $protocolVersion) {
@@ -95,6 +101,7 @@ abstract class HttpClientTest extends HttpBaseTest
     /**
      * @group integration
      */
+    #[Group('integration')]
     public function testSendWithInvalidUri()
     {
         $request = self::$messageFactory->createRequest(

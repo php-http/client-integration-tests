@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.1.2] - 2025-11-11
 
 - Allow PHPUnit > 9
-- Removed PhpUnitBackwardCompatibleTrait
+- Deprecate PhpUnitBackwardCompatibleTrait
 
 ## [3.1.1] - 2024-09-01
 

@@ -10,8 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class HttpBaseTest extends TestCase
 {
-    use PhpUnitBackwardCompatibleTrait;
-
     /**
      * @var string
      */
@@ -223,7 +221,7 @@ abstract class HttpBaseTest extends TestCase
         if (null === $options['body']) {
             $this->assertEmpty($response->getBody()->__toString());
         } else {
-            self::assertStringContainsStringCompatible($options['body'], $response->getBody()->__toString());
+            self::assertStringContainsString($options['body'], $response->getBody()->__toString());
         }
     }
 

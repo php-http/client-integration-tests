@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 abstract class HttpFeatureTest extends TestCase
 {
-    use PhpUnitBackwardCompatibleTrait;
-
     /**
      * @var MessageFactory
      */
@@ -143,7 +141,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertStringContainsStringCompatible('€', $response->getBody()->__toString());
+        $this->assertStringContainsString('€', $response->getBody()->__toString());
     }
 
     /**
@@ -159,7 +157,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertStringContainsStringCompatible('gzip', $response->getBody()->__toString());
+        $this->assertStringContainsString('gzip', $response->getBody()->__toString());
     }
 
     /**
@@ -175,7 +173,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertStringContainsStringCompatible('deflate', $response->getBody()->__toString());
+        $this->assertStringContainsString('deflate', $response->getBody()->__toString());
     }
 
     /**

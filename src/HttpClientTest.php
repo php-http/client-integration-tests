@@ -107,7 +107,7 @@ abstract class HttpClientTest extends HttpBaseTest
         $request = self::$messageFactory->createRequest(
             'GET',
             $this->getInvalidUri(),
-            $this->defaultHeaders
+            self::$defaultHeaders
         );
 
         $this->expectException(NetworkExceptionInterface::class);

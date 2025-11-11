@@ -35,8 +35,8 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
     {
         $request = self::$messageFactory->createRequest(
             'GET',
-            $this->getUri(),
-            $this->defaultHeaders
+            self::getUri(),
+            self::$defaultHeaders
         );
 
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
@@ -63,7 +63,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $request = self::$messageFactory->createRequest(
             'GET',
             $this->getInvalidUri(),
-            $this->defaultHeaders
+            self::$defaultHeaders
         );
 
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
@@ -136,7 +136,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         $request = self::$messageFactory->createRequest(
             'GET',
             $this->getInvalidUri(),
-            $this->defaultHeaders
+            self::$defaultHeaders
         );
 
         $exception = null;

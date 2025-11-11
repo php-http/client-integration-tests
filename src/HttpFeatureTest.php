@@ -143,7 +143,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertStringContainsString('€', $response->getBody()->__toString());
+        $this->assertStringContainsStringCompatible('€', $response->getBody()->__toString());
     }
 
     /**
@@ -159,7 +159,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertStringContainsString('gzip', $response->getBody()->__toString());
+        $this->assertStringContainsStringCompatible('gzip', $response->getBody()->__toString());
     }
 
     /**
@@ -175,7 +175,7 @@ abstract class HttpFeatureTest extends TestCase
         $response = $this->createClient()->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertStringContainsString('deflate', $response->getBody()->__toString());
+        $this->assertStringContainsStringCompatible('deflate', $response->getBody()->__toString());
     }
 
     /**

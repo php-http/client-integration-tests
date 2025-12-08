@@ -34,7 +34,7 @@ abstract class HttpBaseTest extends TestCase
     /**
      * @var array
      */
-    protected static $defaultHeaders = [
+    protected $defaultHeaders = [
         'Connection' => 'close',
         'User-Agent' => 'PHP HTTP Adapter',
         'Content-Length' => '0',
@@ -59,13 +59,13 @@ abstract class HttpBaseTest extends TestCase
         }
     }
 
-    public static function requestProvider(): array
+    public function requestProvider(): array
     {
         $sets = [
-            'methods' => self::getMethods(),
-            'uris' => [self::getUri()],
-            'headers' => self::getHeaders(),
-            'body' => self::getBodies(),
+            'methods' => $this->getMethods(),
+            'uris' => [$this->getUri()],
+            'headers' => $this->getHeaders(),
+            'body' => $this->getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -82,13 +82,13 @@ abstract class HttpBaseTest extends TestCase
         });
     }
 
-    public static function requestWithOutcomeProvider(): array
+    public function requestWithOutcomeProvider(): array
     {
         $sets = [
-            'urisAndOutcomes' => self::getUrisAndOutcomes(),
-            'protocolVersions' => self::getProtocolVersions(),
-            'headers' => self::getHeaders(),
-            'body' => self::getBodies(),
+            'urisAndOutcomes' => $this->getUrisAndOutcomes(),
+            'protocolVersions' => $this->getProtocolVersions(),
+            'headers' => $this->getHeaders(),
+            'body' => $this->getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -96,7 +96,7 @@ abstract class HttpBaseTest extends TestCase
         return $cartesianProduct->compute();
     }
 
-    private static function getMethods(): array
+    private function getMethods(): array
     {
         return [
             'GET',
@@ -114,7 +114,7 @@ abstract class HttpBaseTest extends TestCase
      *
      * @return string|null
      */
-    protected static function getUri(array $query = [])
+    protected function getUri(array $query = [])
     {
         return !empty($query)
             ? PHPUnitUtility::getUri().'?'.http_build_query($query, '', '&')
@@ -132,25 +132,25 @@ abstract class HttpBaseTest extends TestCase
     /**
      * @return array
      */
-    private static function getUrisAndOutcomes()
+    private function getUrisAndOutcomes()
     {
         return [
             [
-                self::getUri(['client_error' => true]),
+                $this->getUri(['client_error' => true]),
                 [
                     'statusCode' => 400,
                     'reasonPhrase' => 'Bad Request',
                 ],
             ],
             [
-                self::getUri(['server_error' => true]),
+                $this->getUri(['server_error' => true]),
                 [
                     'statusCode' => 500,
                     'reasonPhrase' => 'Internal Server Error',
                 ],
             ],
             [
-                self::getUri(['redirect' => true]),
+                $this->getUri(['redirect' => true]),
                 [
                     'statusCode' => 302,
                     'reasonPhrase' => 'Found',
@@ -163,7 +163,7 @@ abstract class HttpBaseTest extends TestCase
     /**
      * @return array
      */
-    private static function getProtocolVersions()
+    private function getProtocolVersions()
     {
         return ['1.1', '1.0'];
     }
@@ -171,14 +171,14 @@ abstract class HttpBaseTest extends TestCase
     /**
      * @return string[]
      */
-    private static function getHeaders()
+    private function getHeaders()
     {
-        $headers = self::$defaultHeaders;
+        $headers = $this->defaultHeaders;
         $headers['Accept-Charset'] = 'utf-8';
         $headers['Accept-Language'] = 'en';
 
         return [
-            self::$defaultHeaders,
+            $this->defaultHeaders,
             $headers,
         ];
     }
@@ -186,18 +186,18 @@ abstract class HttpBaseTest extends TestCase
     /**
      * @return array
      */
-    private static function getBodies()
+    private function getBodies()
     {
         return [
             null,
-            http_build_query(self::getData(), '', '&'),
+            http_build_query($this->getData(), '', '&'),
         ];
     }
 
     /**
      * @return array
      */
-    private static function getData()
+    private function getData()
     {
         return ['param1' => 'foo', 'param2' => ['bar', ['baz']]];
     }

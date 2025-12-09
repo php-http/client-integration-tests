@@ -27,7 +27,7 @@
     },
     "require-dev": {
         "php-http/httplug": "^2.0",
-        "nyholm/psr7": "^1.8@dev"
+        "nyholm/psr7": "^1.8"
     },
     "autoload": {
         "psr-4": {

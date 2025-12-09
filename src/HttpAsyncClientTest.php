@@ -2,28 +2,21 @@
 
 namespace Http\Client\Tests;
 
+use Http\Client\Exception;
 use Http\Client\HttpAsyncClient;
+use Http\Promise\Promise;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
 abstract class HttpAsyncClientTest extends HttpBaseTest
 {
-    /**
-     * @var HttpAsyncClient
-     */
-    protected $httpAsyncClient;
+    protected HttpAsyncClient $httpAsyncClient;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->httpAsyncClient = $this->createHttpAsyncClient();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         unset($this->httpAdapter);
@@ -31,22 +24,22 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
 
     abstract protected function createHttpAsyncClient(): HttpAsyncClient;
 
-    public function testSuccessiveCallMustUseResponseInterface()
+    public function testSuccessiveCallMustUseResponseInterface(): void
     {
-        $request = self::$messageFactory->createRequest(
-            'GET',
-            $this->getUri(),
-            $this->defaultHeaders
-        );
+        $request = self::$requestFactory->createRequest('GET', self::getUri());
+        foreach (self::$defaultHeaders as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
 
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
-        $this->assertInstanceOf('Http\Promise\Promise', $promise);
+        $this->assertInstanceOf(Promise::class, $promise);
 
         $response = null;
         $promise->then()->then()->then(function ($r) use (&$response) {
             $response = $r;
 
-            return $response;
+            return $r;
         });
 
         $promise->wait(false);
@@ -58,23 +51,22 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
         );
     }
 
-    public function testSuccessiveInvalidCallMustUseException()
+    public function testSuccessiveInvalidCallMustUseException(): void
     {
-        $request = self::$messageFactory->createRequest(
-            'GET',
-            $this->getInvalidUri(),
-            $this->defaultHeaders
-        );
+        $request = self::$requestFactory->createRequest('GET', $this->getInvalidUri());
+        foreach (self::$defaultHeaders as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
 
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
-        $this->assertInstanceOf('Http\Promise\Promise', $promise);
+        $this->assertInstanceOf(Promise::class, $promise);
 
         $exception = null;
         $response = null;
         $promise->then()->then()->then(function ($r) use (&$response) {
             $response = $r;
 
-            return $response;
+            return $r;
         }, function ($e) use (&$exception) {
             $exception = $e;
 
@@ -85,7 +77,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
 
         $this->assertNull($response);
         $this->assertNotNull($exception);
-        $this->assertInstanceOf('\Http\Client\Exception', $exception);
+        $this->assertInstanceOf(Exception::class, $exception);
     }
 
     /**
@@ -94,21 +86,22 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
      */
     #[DataProvider('requestProvider')]
     #[Group('integration')]
-    public function testAsyncSendRequest($method, $uri, array $headers, $body)
+    public function testAsyncSendRequest(string $method, string $uri, array $headers, ?string $body): void
     {
         if (null != $body) {
             $headers['Content-Length'] = (string) strlen($body);
         }
 
-        $request = self::$messageFactory->createRequest(
-            $method,
-            $uri,
-            $headers,
-            $body
-        );
+        $request = self::$requestFactory->createRequest($method, $uri);
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+        if (null !== $body) {
+            $request = $request->withBody(self::$streamFactory->createStream($body));
+        }
 
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
-        $this->assertInstanceOf('Http\Promise\Promise', $promise);
+        $this->assertInstanceOf(Promise::class, $promise);
 
         $response = null;
         $promise->then(function ($r) use (&$response) {
@@ -131,18 +124,17 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
      * @group integration
      */
     #[Group('integration')]
-    public function testSendAsyncWithInvalidUri()
+    public function testSendAsyncWithInvalidUri(): void
     {
-        $request = self::$messageFactory->createRequest(
-            'GET',
-            $this->getInvalidUri(),
-            $this->defaultHeaders
-        );
+        $request = self::$requestFactory->createRequest('GET', $this->getInvalidUri());
+        foreach (self::$defaultHeaders as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
 
         $exception = null;
         $response = null;
         $promise = $this->httpAsyncClient->sendAsyncRequest($request);
-        $this->assertInstanceOf('Http\Promise\Promise', $promise);
+        $this->assertInstanceOf(Promise::class, $promise);
 
         $promise->then(function ($r) use (&$response) {
             $response = $r;
@@ -157,7 +149,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
 
         $this->assertNull($response);
         $this->assertNotNull($exception);
-        $this->assertInstanceOf('\Http\Client\Exception', $exception);
+        $this->assertInstanceOf(Exception::class, $exception);
     }
 
     /**
@@ -166,7 +158,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
      */
     #[Group('integration')]
     #[DataProvider('requestWithOutcomeProvider')]
-    public function testSendAsyncRequestWithOutcome($uriAndOutcome, $protocolVersion, array $headers, $body)
+    public function testSendAsyncRequestWithOutcome(array $uriAndOutcome, string $protocolVersion, array $headers, ?string $body): void
     {
         if ('1.0' === $protocolVersion) {
             $body = null;
@@ -176,13 +168,14 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
             $headers['Content-Length'] = (string) strlen($body);
         }
 
-        $request = self::$messageFactory->createRequest(
-            $method = 'GET',
-            $uriAndOutcome[0],
-            $headers,
-            $body,
-            $protocolVersion
-        );
+        $request = self::$requestFactory->createRequest($method = 'GET', $uriAndOutcome[0]);
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+        if (null !== $body) {
+            $request = $request->withBody(self::$streamFactory->createStream($body));
+        }
+        $request = $request->withProtocolVersion($protocolVersion);
 
         $outcome = $uriAndOutcome[1];
         $outcome['protocolVersion'] = $protocolVersion;
@@ -195,7 +188,7 @@ abstract class HttpAsyncClientTest extends HttpBaseTest
             return $response;
         });
 
-        $this->assertInstanceOf('Http\Promise\Promise', $promise);
+        $this->assertInstanceOf(Promise::class, $promise);
         $promise->wait();
         $this->assertResponse(
             $response,

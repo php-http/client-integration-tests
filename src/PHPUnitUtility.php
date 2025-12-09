@@ -16,18 +16,17 @@ class PHPUnitUtility
      */
     public static function getUri()
     {
-        return isset($_SERVER['TEST_SERVER']) ? $_SERVER['TEST_SERVER'] : false;
+        return array_key_exists('TEST_SERVER', $_SERVER) ? $_SERVER['TEST_SERVER'] : false;
     }
 
     /**
      * Gets the file.
      *
-     * @param bool        $tmp  TRUE if the file should be in the "/tmp" directory else FALSE.
-     * @param string|null $name The name.
+     * @param bool $tmp  TRUE if the file should be in the "/tmp" directory else FALSE.
      *
      * @return string The file.
      */
-    public static function getFile($tmp = true, $name = null)
+    public static function getFile(bool $tmp = true, ?string $name = null): string
     {
         return ($tmp ? realpath(sys_get_temp_dir()) : '').'/'.(null === $name ? uniqid() : $name);
     }

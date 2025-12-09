@@ -2,28 +2,21 @@
 
 namespace Http\Client\Tests;
 
-use Http\Message\MessageFactory;
-use Http\Message\MessageFactory\GuzzleMessageFactory;
+use GuzzleHttp\Psr7\HttpFactory;
 use Nerd\CartesianProduct\CartesianProduct;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 abstract class HttpBaseTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private static $logPath;
+    private static string $logPath;
 
-    /**
-     * @var MessageFactory
-     */
-    protected static $messageFactory;
+    protected static RequestFactoryInterface $requestFactory;
+    protected static StreamFactoryInterface $streamFactory;
 
-    /**
-     * @var array
-     */
-    protected $defaultOptions = [
+    protected array $defaultOptions = [
         'protocolVersion' => '1.1',
         'statusCode' => 200,
         'reasonPhrase' => 'OK',
@@ -31,10 +24,7 @@ abstract class HttpBaseTest extends TestCase
         'body' => 'Ok',
     ];
 
-    /**
-     * @var array
-     */
-    protected $defaultHeaders = [
+    protected static array $defaultHeaders = [
         'Connection' => 'close',
         'User-Agent' => 'PHP HTTP Adapter',
         'Content-Length' => '0',
@@ -46,7 +36,7 @@ abstract class HttpBaseTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$logPath = PHPUnitUtility::getFile(true, 'php-http-adapter.log');
-        self::$messageFactory = new GuzzleMessageFactory();
+        self::$requestFactory = self::$streamFactory = new HttpFactory();
     }
 
     /**
@@ -59,13 +49,13 @@ abstract class HttpBaseTest extends TestCase
         }
     }
 
-    public function requestProvider(): array
+    public static function requestProvider(): array
     {
         $sets = [
-            'methods' => $this->getMethods(),
-            'uris' => [$this->getUri()],
-            'headers' => $this->getHeaders(),
-            'body' => $this->getBodies(),
+            'methods' => self::getMethods(),
+            'uris' => [self::getUri()],
+            'headers' => self::getHeaders(),
+            'body' => self::getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -82,13 +72,13 @@ abstract class HttpBaseTest extends TestCase
         });
     }
 
-    public function requestWithOutcomeProvider(): array
+    public static function requestWithOutcomeProvider(): array
     {
         $sets = [
-            'urisAndOutcomes' => $this->getUrisAndOutcomes(),
-            'protocolVersions' => $this->getProtocolVersions(),
-            'headers' => $this->getHeaders(),
-            'body' => $this->getBodies(),
+            'urisAndOutcomes' => self::getUrisAndOutcomes(),
+            'protocolVersions' => self::getProtocolVersions(),
+            'headers' => self::getHeaders(),
+            'body' => self::getBodies(),
         ];
 
         $cartesianProduct = new CartesianProduct($sets);
@@ -96,7 +86,7 @@ abstract class HttpBaseTest extends TestCase
         return $cartesianProduct->compute();
     }
 
-    private function getMethods(): array
+    private static function getMethods(): array
     {
         return [
             'GET',
@@ -114,43 +104,37 @@ abstract class HttpBaseTest extends TestCase
      *
      * @return string|null
      */
-    protected function getUri(array $query = [])
+    protected static function getUri(array $query = []): ?string
     {
         return !empty($query)
             ? PHPUnitUtility::getUri().'?'.http_build_query($query, '', '&')
             : PHPUnitUtility::getUri();
     }
 
-    /**
-     * @return string
-     */
-    protected function getInvalidUri()
+    protected function getInvalidUri(): string
     {
         return 'http://invalid.php-http.org';
     }
 
-    /**
-     * @return array
-     */
-    private function getUrisAndOutcomes()
+    private static function getUrisAndOutcomes(): array
     {
         return [
             [
-                $this->getUri(['client_error' => true]),
+                self::getUri(['client_error' => true]),
                 [
                     'statusCode' => 400,
                     'reasonPhrase' => 'Bad Request',
                 ],
             ],
             [
-                $this->getUri(['server_error' => true]),
+                self::getUri(['server_error' => true]),
                 [
                     'statusCode' => 500,
                     'reasonPhrase' => 'Internal Server Error',
                 ],
             ],
             [
-                $this->getUri(['redirect' => true]),
+                self::getUri(['redirect' => true]),
                 [
                     'statusCode' => 302,
                     'reasonPhrase' => 'Found',
@@ -160,10 +144,7 @@ abstract class HttpBaseTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function getProtocolVersions()
+    private static function getProtocolVersions(): array
     {
         return ['1.1', '1.0'];
     }
@@ -171,33 +152,27 @@ abstract class HttpBaseTest extends TestCase
     /**
      * @return string[]
      */
-    private function getHeaders()
+    private static function getHeaders(): array
     {
-        $headers = $this->defaultHeaders;
+        $headers = self::$defaultHeaders;
         $headers['Accept-Charset'] = 'utf-8';
         $headers['Accept-Language'] = 'en';
 
         return [
-            $this->defaultHeaders,
+            self::$defaultHeaders,
             $headers,
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function getBodies()
+    private static function getBodies(): array
     {
         return [
             null,
-            http_build_query($this->getData(), '', '&'),
+            http_build_query(self::getData(), '', '&'),
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function getData()
+    private static function getData(): array
     {
         return ['param1' => 'foo', 'param2' => ['bar', ['baz']]];
     }
@@ -226,16 +201,13 @@ abstract class HttpBaseTest extends TestCase
     }
 
     /**
-     * @param string   $method
      * @param string[] $headers
-     * @param string   $body
-     * @param string   $protocolVersion
      */
     protected function assertRequest(
-        $method,
-        array $headers = [],
-        $body = null,
-        $protocolVersion = '1.1'
+        string $method,
+        array  $headers = [],
+        ?string $body = null,
+        string $protocolVersion = '1.1'
     ) {
         $request = $this->getRequest();
 
@@ -266,10 +238,7 @@ abstract class HttpBaseTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    protected function getRequest()
+    protected function getRequest(): array
     {
         $file = fopen(self::$logPath, 'r');
         flock($file, LOCK_EX);

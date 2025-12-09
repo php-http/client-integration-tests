@@ -12,22 +12,13 @@ use Psr\Http\Client\NetworkExceptionInterface;
  */
 abstract class HttpClientTest extends HttpBaseTest
 {
-    /**
-     * @var ClientInterface
-     */
-    protected $httpAdapter;
+    protected ClientInterface $httpAdapter;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->httpAdapter = $this->createHttpAdapter();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         unset($this->httpAdapter);
@@ -41,18 +32,20 @@ abstract class HttpClientTest extends HttpBaseTest
      */
     #[Group('integration')]
     #[DataProvider('requestProvider')]
-    public function testSendRequest($method, $uri, array $headers, $body)
+    public function testSendRequest(string $method, string $uri, array $headers, ?string $body)
     {
         if (null != $body) {
             $headers['Content-Length'] = (string) strlen($body);
         }
 
-        $request = self::$messageFactory->createRequest(
-            $method,
-            $uri,
-            $headers,
-            $body
-        );
+        $request = self::$requestFactory->createRequest($method, $uri);
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+        if (null !== $body) {
+            $request = $request->withBody(self::$streamFactory->createStream($body));
+        }
+
 
         $response = $this->httpAdapter->sendRequest($request);
 
@@ -71,7 +64,7 @@ abstract class HttpClientTest extends HttpBaseTest
      */
     #[Group('integration')]
     #[DataProvider('requestWithOutcomeProvider')]
-    public function testSendRequestWithOutcome($uriAndOutcome, $protocolVersion, array $headers, $body)
+    public function testSendRequestWithOutcome(array $uriAndOutcome, string $protocolVersion, array $headers, ?string $body): void
     {
         if ('1.0' === $protocolVersion) {
             $body = null;
@@ -81,13 +74,14 @@ abstract class HttpClientTest extends HttpBaseTest
             $headers['Content-Length'] = (string) strlen($body);
         }
 
-        $request = self::$messageFactory->createRequest(
-            $method = 'GET',
-            $uriAndOutcome[0],
-            $headers,
-            $body,
-            $protocolVersion
-        );
+        $request = self::$requestFactory->createRequest($method = 'GET', $uriAndOutcome[0]);
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+        if (null !== $body) {
+            $request = $request->withBody(self::$streamFactory->createStream($body));
+        }
+        $request->withProtocolVersion($protocolVersion);
 
         $response = $this->httpAdapter->sendRequest($request);
 
@@ -102,13 +96,15 @@ abstract class HttpClientTest extends HttpBaseTest
      * @group integration
      */
     #[Group('integration')]
-    public function testSendWithInvalidUri()
+    public function testSendWithInvalidUri(): void
     {
-        $request = self::$messageFactory->createRequest(
+        $request = self::$requestFactory->createRequest(
             'GET',
             $this->getInvalidUri(),
-            $this->defaultHeaders
         );
+        foreach (self::$defaultHeaders as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
 
         $this->expectException(NetworkExceptionInterface::class);
         $this->httpAdapter->sendRequest($request);

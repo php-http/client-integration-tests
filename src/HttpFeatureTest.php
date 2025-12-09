@@ -2,24 +2,20 @@
 
 namespace Http\Client\Tests;
 
+use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
-use Http\Message\MessageFactory;
-use Http\Message\MessageFactory\GuzzleMessageFactory;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 abstract class HttpFeatureTest extends TestCase
 {
-    /**
-     * @var MessageFactory
-     */
-    protected static $messageFactory;
+    protected static RequestFactoryInterface $messageFactory;
+    protected static StreamFactoryInterface $streamFactory;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function setUpBeforeClass(): void
     {
-        self::$messageFactory = new GuzzleMessageFactory();
+        self::$messageFactory = self::$streamFactory = new HttpFactory();
     }
 
     abstract protected function createClient(): ClientInterface;
@@ -27,7 +23,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Send a GET Request
      */
-    public function testGet()
+    public function testGet(): void
     {
         $request = self::$messageFactory->createRequest(
             'GET',
@@ -42,15 +38,12 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Send a POST Request
      */
-    public function testPost()
+    public function testPost(): void
     {
         $testData = 'Test data';
-        $request = self::$messageFactory->createRequest(
-            'POST',
-            'https://httpbin.org/post',
-            ['Content-Length' => strlen($testData)],
-            $testData
-        );
+        $request = self::$messageFactory->createRequest('POST', 'https://httpbin.org/post');
+        $request = $request->withHeader('Content-Length', strlen($testData));
+        $request = $request->withBody(self::$streamFactory->createStream($testData));
 
         $response = $this->createClient()->sendRequest($request);
 
@@ -64,7 +57,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Send a PATCH Request
      */
-    public function testPatch()
+    public function testPatch(): void
     {
         $request = self::$messageFactory->createRequest(
             'PATCH',
@@ -79,7 +72,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Send a PUT Request
      */
-    public function testPut()
+    public function testPut(): void
     {
         $request = self::$messageFactory->createRequest(
             'PUT',
@@ -94,7 +87,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Send a DELETE Request
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $request = self::$messageFactory->createRequest(
             'DELETE',
@@ -109,15 +102,14 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Auto fixing content length header
      */
-    public function testAutoSetContentLength()
+    public function testAutoSetContentLength(): void
     {
         $testData = 'Test data';
         $request = self::$messageFactory->createRequest(
             'POST',
             'https://httpbin.org/post',
-            [],
-            $testData
         );
+        $request = $request->withBody(self::$streamFactory->createStream($testData));
 
         $response = $this->createClient()->sendRequest($request);
 
@@ -131,7 +123,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Encoding in UTF8
      */
-    public function testEncoding()
+    public function testEncoding(): void
     {
         $request = self::$messageFactory->createRequest(
             'GET',
@@ -147,7 +139,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Gzip content decoding
      */
-    public function testGzip()
+    public function testGzip(): void
     {
         $request = self::$messageFactory->createRequest(
             'GET',
@@ -163,7 +155,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Deflate content decoding
      */
-    public function testDeflate()
+    public function testDeflate(): void
     {
         $request = self::$messageFactory->createRequest(
             'GET',
@@ -179,7 +171,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Follow redirection
      */
-    public function testRedirect()
+    public function testRedirect(): void
     {
         $request = self::$messageFactory->createRequest(
             'GET',
@@ -194,7 +186,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Dechunk stream body
      */
-    public function testChunked()
+    public function testChunked(): void
     {
         $request = self::$messageFactory->createRequest(
             'GET',
@@ -213,7 +205,7 @@ abstract class HttpFeatureTest extends TestCase
     /**
      * @feature Ssl connection
      */
-    public function testSsl()
+    public function testSsl(): void
     {
         $request = self::$messageFactory->createRequest(
             'GET',

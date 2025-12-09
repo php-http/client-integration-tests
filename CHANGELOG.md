@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Allow PHPUnit > 9
 - Removed deprecated PhpUnitBackwardCompatibleTrait
+- Replaced deprecated HttpBaseTest::$messageFactory with $requestFactory and $streamFactory
+- Parameter type and return type declarations on all test classes
 
 # 3.x
 

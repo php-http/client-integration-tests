@@ -16,9 +16,9 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
+        "ext-json": "*",
         "phpunit/phpunit": "^9.6.17 || ^10.0 || ^11.0 || ^12.0",
         "php-http/message": "^1.0 || ^2.0",
-        "php-http/message-factory": "^1.0",
         "guzzlehttp/psr7": "^1.9 || ^2.0",
         "th3n3rd/cartesian-product": "^0.3"
     },

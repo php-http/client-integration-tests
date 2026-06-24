@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # 3.x
 
+## [3.2.0] - 2026-06-24
+
+- Allow installation with guzzlehttp/psr7 version 3
+
 ## [3.1.3] - 2025-12-08
 
 - Fixed BC breaks accidentally introduced in 3.1.2

@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # 3.x
 
+## [3.2.1] - 2026-07-05
+
+- Allow that HEAD requests sent by a client do not have the Content-Length header
+
 ## [3.2.0] - 2026-06-24
 
 - Allow installation with guzzlehttp/psr7 version 3

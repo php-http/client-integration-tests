@@ -257,7 +257,7 @@ abstract class HttpBaseTest extends TestCase
 
             $name = strtoupper(str_replace('-', '_', 'http-'.$name));
 
-            if ('TRACE' === $method && 'HTTP_CONTENT_LENGTH' === $name && !isset($request['SERVER'][$name])) {
+            if (in_array($method, ['TRACE', 'HEAD'], true) && 'HTTP_CONTENT_LENGTH' === $name && !isset($request['SERVER'][$name])) {
                 continue;
             }
 

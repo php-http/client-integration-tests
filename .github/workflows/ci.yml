@@ -34,10 +34,12 @@ jobs:
           tools: composer:v2
 
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Download dependencies
         run: |
+          # for guzzle PHP 7.4 with phpunit/phpunit ^7.5.20
+          composer config --json policy.advisories.ignore-id '["PKSA-z3gr-8qht-p93v"]'
           composer require ${{ matrix.batch.package }} --no-update
           composer update --prefer-source --no-interaction
 
